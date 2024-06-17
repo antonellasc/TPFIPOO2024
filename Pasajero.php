@@ -41,6 +41,71 @@ class Pasajero extends Persona {
 		$this->setObjViaje($obj_Viaje);
     }
 
+	public function Buscar($dni){
+		$base=new BaseDatos();
+		$consultaPas="Select * from pasajero where pdocumento=".$dni;
+		$resp= false;
+		if($base->Iniciar()){
+			if($base->Ejecutar($consultaPas)){
+				if($row2=$base->Registro()){					
+				    $this->setNroDoc($dni);
+					$this->setNroPFrecuente($row2['nropfrecuente']);
+					$this->setObjViaje($row2['idviaje']);
+					// $this->setTelefono($row2['telefono']);
+					$resp= true;
+				}				
+			
+		 	}	else {
+		 			$this->setmensajeoperacion($base->getError());
+		 		
+			}
+		 }	else {
+		 		$this->setmensajeoperacion($base->getError());
+		 	
+		 }		
+		 return $resp;
+	}	
+
+
+	public function listar($condicion=""){
+	    $arreglo = null;
+		$base=new BaseDatos();
+		$consultaPasajeros="Select * from pasajero ";
+		if ($condicion!=""){
+		    $consultaPasajeros=$consultaPasajeros.' where '.$condicion;
+		}
+		$consultaPasajeros.=" order by apellido ";
+		//echo $consultaPasajeros;
+		if($base->Iniciar()){
+			if($base->Ejecutar($consultaPasajeros)){				
+				$arreglo= array();
+				while($row2=$base->Registro()){
+					
+					$NroDoc=$row2['nrodoc'];
+					$Nombre=$row2['nombre'];
+					$Apellido=$row2['apellido'];
+					$Telefono=$row2['telefono'];
+					$NroPFrecuente=$row2['nropfrecuente'];
+					$ObjViaje=$row2['idviaje'];
+				
+					$pasaj=new Pasajero();
+					$pasaj->cargar($NroDoc,$Nombre,$Apellido,$Telefono, $NroPFrecuente, $ObjViaje);
+					array_push($arreglo,$pasaj);
+	
+				}
+				
+			
+		 	}	else {
+		 			$this->setmensajeoperacion($base->getError());
+		 		
+			}
+		 }	else {
+		 		$this->setmensajeoperacion($base->getError());
+		 	
+		 }	
+		 return $arreglo;
+	}
+
 
     public function insertar(){
         $resp = parent :: insertar();
@@ -65,31 +130,6 @@ class Pasajero extends Persona {
     		}
 	    	return $resp;
 	}
-
-    public function Buscar($dni){
-		$base=new BaseDatos();
-		$consultaPas="Select * from pasajero where pdocumento=".$dni;
-		$resp= false;
-		if($base->Iniciar()){
-			if($base->Ejecutar($consultaPas)){
-				if($row2=$base->Registro()){					
-				    $this->setNroDoc($dni);
-					$this->setNroPFrecuente($row2['nropfrecuente']);
-					$this->setObjViaje($row2['idviaje']);
-					// $this->setTelefono($row2['telefono']);
-					$resp= true;
-				}				
-			
-		 	}	else {
-		 			$this->setmensajeoperacion($base->getError());
-		 		
-			}
-		 }	else {
-		 		$this->setmensajeoperacion($base->getError());
-		 	
-		 }		
-		 return $resp;
-	}	
 
 
     public function modificar(){
