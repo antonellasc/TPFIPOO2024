@@ -93,6 +93,45 @@ class Persona {
 		 return $resp;
 	}	
  
+
+	public function listar($condicion=""){
+	    $arreglo = null;
+		$base=new BaseDatos();
+		$consultaPersonas="Select * from persona ";
+		if ($condicion!=""){
+		    $consultaPersonas=$consultaPersonas.' where '.$condicion;
+		}
+		$consultaPersonas.=" order by apellido ";
+		//echo $consultaPersonas;
+		if($base->Iniciar()){
+			if($base->Ejecutar($consultaPersonas)){				
+				$arreglo= array();
+				while($row2=$base->Registro()){
+					
+					$NroDoc=$row2['nrodoc'];
+					$Nombre=$row2['nombre'];
+					$Apellido=$row2['apellido'];
+					$Telefono=$row2['telefono'];
+				
+					$perso=new Persona();
+					$perso->cargar($NroDoc,$Nombre,$Apellido,$Telefono);
+					array_push($arreglo,$perso);
+	
+				}
+				
+			
+		 	}	else {
+		 			$this->setmensajeoperacion($base->getError());
+		 		
+			}
+		 }	else {
+		 		$this->setmensajeoperacion($base->getError());
+		 	
+		 }	
+		 return $arreglo;
+	}
+
+
     public function insertar(){
 		$base=new BaseDatos();
 		$resp= false;
