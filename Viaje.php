@@ -6,15 +6,17 @@ class Viaje{
     private $cantMaxPasajeros;
     private $objEmpresa;
     private $objResponsable;
+    private $arrayPasajeros;
     private $importe;
 
     // CONSTRUCTOR
-    public function __construct($idViaje, $vDestino, $cantMaxPasajeros, $obj_Empresa, $obj_Responsable, $vImporte){
+    public function __construct($idViaje, $vDestino, $cantMaxPasajeros, $obj_Empresa, $obj_Responsable, $colPasajeros, $vImporte){
         $this->idV = $idViaje;
         $this->destino = $vDestino;
         $this->cantMaxPasajeros = $cantMaxPasajeros;
         $this->objEmpresa = $obj_Empresa;
         $this->objResponsable = $obj_Responsable;
+        $this->arrayPasajeros = $colPasajeros;
         $this->importe = $vImporte;
     }
 
@@ -37,6 +39,10 @@ class Viaje{
 
     public function getObjResponsable(){
         return $this->objResponsable;
+    }
+
+    public function getColPasajeros(){
+        return $this->arrayPasajeros;
     }
 
     public function getImporte(){
@@ -64,6 +70,10 @@ class Viaje{
         $this->objResponsable = $obj_Responsable;
     }
 
+    public function setColPasajeros($colPasajeros){
+        $this->arrayPasajeros = $colPasajeros;
+    }
+
     public function setImporte($vImporte){
         $this->importe = $vImporte;
     }
@@ -75,6 +85,17 @@ class Viaje{
         "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
         "Empresa: \n" . $this->getObjEmpresa() . 
         "Responsable del viaje: \n" . $this->getObjResponsable() . 
+        "Pasajeros: \n" . $this->mostrarColeccion($this->getColPasajeros()) . "\n" . 
         "Importe del viaje: $" . $this->getImporte() . "\n";
     }
+
+    private function mostrarColeccion($coleccion){
+        $retorno = "";
+        foreach ($coleccion as $obj) {
+            $retorno .= $obj . "\n";
+            $retorno .= "----------------------------------------------------------------------\n";
+        }
+        return $retorno;
+    }
+
 }
