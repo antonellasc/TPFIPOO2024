@@ -8,40 +8,45 @@ include 'Empresa.php';
 
 $objEmpresa = New Empresa(1906, "Viaje Feliz", "Belgrano 10");
 $objViaje = New Viaje();
+$objPasajero = New Pasajero();
 
 do{
-    echo "Menu de Opciones";
-    echo "1.Ingresar Nuevo Viaje";
-    echo "2.Modificar un Viaje existente";
-    echo "3.Ingresar Pasajeros";
-    echo "4.Eliminar datos de viaje";
-    echo "5.Mostrar datos del viaje";
-    $opcion = trim(fgets(STDIN));
+
+    $opcion = opciones();
 
     switch ($opcion) {
-        case '1':
+        case 1:
             ingresarNuevoViaje($objEmpresa);
             break;
-        case '2':
-            echo "Modificar Viaje existente";
-            echo "1.Modificar datos del viaje";
-            echo "2.Modificar Responsable del viaje";
-            echo "3.Modificar datos de Pasajeros";
-            $modificacion = trim(fgets(STDIN));
-            switch ($modificacion) {
-                case '1':
+        case 2:
+            $opviaje = opcionesModViaje();
+            switch ($opviaje) {
+                case 1:
                     modificarViaje();
                     break;
-                default:
-                   break;
+
             }
-        default:
-            # code...
+            break;
+        case 3:
+            break;
+
+        case 4:
+
+            break;
+
+        case 5:
+
+            break;
+
+        case 0:
+            echo "-------------------- FIN DEL PROGRAMA --------------------" ;
             break;
     }
 
 }while($opcion != 0);
 
+
+//OPCION 1
 function ingresarNuevoViaje($objEmpresa){
     // Solicitar al usuario el ingreso de datos para crear un nuevo viaje
     echo "Ingrese codigo del Viaje: ";
@@ -54,14 +59,14 @@ function ingresarNuevoViaje($objEmpresa){
     echo "¿Desea ingresar datos del responsable del viaje? (s/n): ";
     $rta = strtolower(trim(fgets(STDIN)));
     $objResponsable = null; //en caso de que la respuesta sea "n"
-    if ($rta== 's') {
-        echo "Ingrese el nombre del pasajero: ";
+    if ($rta == 's') {
+        echo "Ingrese el nombre del responsable: ";
             $nombre = trim(fgets(STDIN));
-            echo "Ingrese el apellido del pasajero: ";
+            echo "Ingrese el apellido del responsable: ";
             $apellido = trim(fgets(STDIN));
-            echo "Ingrese el número de documento del pasajero: ";
+            echo "Ingrese el número de documento del responsable: ";
             $nroDoc = trim(fgets(STDIN));
-            echo "Ingrese el teléfono del pasajero: ";
+            echo "Ingrese el teléfono del responsable: ";
             $telefono = trim(fgets(STDIN));
             echo "Ingrese Nro de empleado:";
             $numEmpleado = trim(fgets(STDIN));
@@ -86,7 +91,7 @@ function ingresarNuevoViaje($objEmpresa){
             $telefono = trim(fgets(STDIN));
             echo "Ingrese el número de pasajero frecuente: ";
             $nroPasajeroFrecuente = trim(fgets(STDIN));
-            $arregloPasajeros[] = new Pasajero($nombre, $apellido, $nroDoc, $telefono, $nroPasajeroFrecuente, $idViaje);
+            $arregloPasajsoeros[] = new Pasajero($nombre, $apellido, $nroDoc, $telefono, $nroPasajeroFrecuente, $idViaje);
         }
     } while ($rta1 != 'n');
 
@@ -107,7 +112,71 @@ function ingresarNuevoViaje($objEmpresa){
 function modificarViaje(){
 
 }
+function ingresarPasajero(){
 
+}
+
+function eliminarDatosViaje(){
+
+}
+
+function mostrarDatosViaje($objEmpresa){
+    echo "Ingrese el id del viaje: ";
+    $idViaje = trim(fgets(STDIN));
+    $viajeEncontrado = null;
+    $colViajes = $objEmpresa->getArregloViajes();
+
+    foreach ($colViajes as $viaje){
+        if ($viaje->getIdViaje() == $idViaje){
+                $viajeEncontrado = $viaje-> __toString();
+                break;
+            } 
+            if($viajeEncontrado !== null){
+                echo $viajeEncontrado;
+        }else {
+            echo "No se encontró el viaje con el ID especificado. \n";
+        }
+        return $viajeEncontrado;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+function opciones(){ 
+echo "+--------------------------------------------------+\n";
+    echo "MENU DE OPCIONES PRINCIPAL";
+    echo "1: Ingresar Nuevo Viaje";
+    echo "2: Modificar un Viaje existente";
+    echo "3: Ingresar Pasajero";
+    echo "4: Eliminar datos de viaje";
+    echo "5: Mostrar datos del viaje";
+    echo "0: Salir";
+    echo "Elija una opcion: ";
+    $opcion = trim(fgets(STDIN));
+    echo "+--------------------------------------------------+\n";
+    
+    return $opcion;
+}
+function opcionesModViaje(){ 
+    echo "*------------------------------------*\n";
+    echo "OPCIONES DE VIAJE. \n";
+    echo "Modificar Viaje existente";
+    echo "1.Modificar datos del viaje";
+    echo "2.Modificar Responsable del viaje";
+    echo "3.Modificar datos de Pasajeros";
+    echo "Eliga una opcion: ";
+    $opcion = trim(fgets(STDIN));
+    echo "*------------------------------------*\n";
+        
+        return $opcion;
+    }
 
 
 ?>
