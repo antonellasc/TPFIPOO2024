@@ -2,12 +2,13 @@
 
 class Pasajero extends Persona {
     private $nroPasajeroFrecuente;
-    private $objViaje;
+	private $objViaje;
+	private $mensajeoperacion;
 
-    public function __construct($nom, $ap, $documento, $nrotel, $nroPFrecuente, $obj_Viaje){
-        parent :: __construct($nom, $ap, $documento, $nrotel);
-        $this->nroPasajeroFrecuente = $nroPFrecuente;
-        $this->objViaje = $obj_Viaje;
+    public function __construct(){
+        parent :: __construct();
+        $this->nroPasajeroFrecuente = "";
+        $this->objViaje = "";
     }
 
     public function getNroPFrecuente(){
@@ -41,6 +42,14 @@ class Pasajero extends Persona {
 		$this->setObjViaje($obj_Viaje);
     }
 
+	public function getmensajeoperacion()
+	{
+		return $this->mensajeoperacion;
+	}
+	public function setmensajeoperacion($mensajeoperacion)
+	{
+		$this->mensajeoperacion = $mensajeoperacion;
+	}
 	public function Buscar($dni){
 		$base=new BaseDatos();
 		$consultaPas="Select * from pasajero where pdocumento=".$dni;

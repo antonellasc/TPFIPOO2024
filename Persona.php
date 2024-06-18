@@ -5,12 +5,13 @@ class Persona {
     private $apellido;
     private $nroDoc;
     private $telefono;
+	private $mensajeoperacion;
 
-    public function __construct($nom, $ap, $documento, $nrotel){
-        $this->nombre = $nom;
-        $this->apellido = $ap;
-        $this->nroDoc = $documento;
-        $this->telefono = $nrotel;
+    public function __construct(){
+        $this->nombre = "";
+        $this->apellido = "";
+        $this->nroDoc = "";
+        $this->telefono = "";
     }
 
     public function getNombre(){

@@ -4,11 +4,14 @@ class Empresa{
     private $idEmpresa;
     private $nombreEm;
     private $domicilioEm;
+    private $arregloViajes;
 
-    public function __construct($idE, $eNombre, $eDomicilio){
-        $this->idEmpresa = $idE;
-        $this->nombreEm = $eNombre;
-        $this->domicilioEm = $eDomicilio;
+
+    public function __construct(){
+        $this->idEmpresa = "";
+        $this->nombreEm = "";
+        $this->domicilioEm = "";
+        $this->arregloViajes = [];
     }
 
     public function getIdEmpresa(){
@@ -23,6 +26,10 @@ class Empresa{
         return $this->domicilioEm;
     }
 
+    public function getArregloViajes(){
+        return $this->arregloViajes;
+    }
+
     public function setIdEmpresa($idE){
         $this->idEmpresa = $idE;
     }
@@ -35,9 +42,14 @@ class Empresa{
         $this->domicilioEm = $eDomicilio;
     }
 
+    public function setArregloViajes($arregloViajes){
+        $this->arregloViajes = $arregloViajes;
+    }
+
     public function __toString(){
         return "Id empresa: " . $this->getIdEmpresa() . "\n" . 
         "Nombre empresa: " . $this->getNombreEmpresa() . "\n" . 
-        "Domicilio: " . $this->getDomicilioEmpresa() . "\n";
+        "Domicilio: " . $this->getDomicilioEmpresa() . "\n". 
+        "Coleccion de Viajes: ". $this->getArregloViajes(). "\n";
     }
 }

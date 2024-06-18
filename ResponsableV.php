@@ -4,10 +4,10 @@ class ResponsableV extends Persona{
     private $nroEmpleado;
     private $nroLicencia;
 
-    public function __construct($nom, $ap, $documento, $nrotel, $rNroEmpleado, $rNroLicencia){
-        parent :: __construct($nom, $ap, $documento, $nrotel);
-        $this->nroEmpleado = $rNroEmpleado;
-        $this->nroLicencia = $rNroLicencia;
+    public function __construct(){
+        parent :: __construct();
+        $this->nroEmpleado = "";
+        $this->nroLicencia = "";
     }
 
     public function getNroEmpleado(){

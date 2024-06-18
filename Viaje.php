@@ -4,20 +4,18 @@ class Viaje{
     private $idV;
     private $destino;
     private $cantMaxPasajeros;
-    private $objEmpresa;
     private $objResponsable;
     private $arrayPasajeros;
     private $importe;
 
     // CONSTRUCTOR
-    public function __construct($idViaje, $vDestino, $cantMaxPasajeros, $obj_Empresa, $obj_Responsable, $colPasajeros, $vImporte){
-        $this->idV = $idViaje;
-        $this->destino = $vDestino;
-        $this->cantMaxPasajeros = $cantMaxPasajeros;
-        $this->objEmpresa = $obj_Empresa;
-        $this->objResponsable = $obj_Responsable;
-        $this->arrayPasajeros = $colPasajeros;
-        $this->importe = $vImporte;
+    public function __construct(){
+        $this->idV = "";
+        $this->destino = "";
+        $this->cantMaxPasajeros = "";
+        $this->objResponsable = "";
+        $this->arrayPasajeros = [];
+        $this->importe = "";
     }
 
     // GETTERS
@@ -31,10 +29,6 @@ class Viaje{
 
     public function getCantMaxPasajeros(){
         return $this->cantMaxPasajeros;
-    }
-
-    public function getObjEmpresa(){
-        return $this->objEmpresa;
     }
 
     public function getObjResponsable(){
@@ -62,10 +56,6 @@ class Viaje{
         $this->cantMaxPasajeros = $cantMaxPasajeros;
     }
 
-    public function setObjEmpresa($obj_Empresa){
-        $this->objEmpresa = $obj_Empresa;
-    }
-
     public function setObjResponsable($obj_Responsable){
         $this->objResponsable = $obj_Responsable;
     }
@@ -83,7 +73,6 @@ class Viaje{
         return "Id viaje: " . $this->getIdViaje() . "\n" . 
         "Destino: " . $this->getDestino() . "\n" . 
         "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
-        "Empresa: \n" . $this->getObjEmpresa() . 
         "Responsable del viaje: \n" . $this->getObjResponsable() . 
         "Pasajeros: \n" . $this->mostrarColeccion($this->getColPasajeros()) . "\n" . 
         "Importe del viaje: $" . $this->getImporte() . "\n";
@@ -96,6 +85,15 @@ class Viaje{
             $retorno .= "----------------------------------------------------------------------\n";
         }
         return $retorno;
+    }
+
+    public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable, $vImporte)
+    {
+        $this->setIdViaje($idViaje);
+        $this->setDestino($vDestino);
+        $this->setCantMaxPasajeros($cantMaxPasajeros);
+        $this->setObjResponsable($obj_Responsable);
+        $this->setImporte($vImporte);
     }
 
 }
