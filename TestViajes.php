@@ -35,7 +35,7 @@ do{
             break;
 
         case 5:
-
+            mostrarDatosViaje($objEmpresa);
             break;
 
         case 0:
@@ -138,7 +138,6 @@ function mostrarDatosViaje($objEmpresa){
         }
         return $viajeEncontrado;
     }
-
 }
 
 
