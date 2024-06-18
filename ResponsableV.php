@@ -132,4 +132,37 @@ class ResponsableV extends Persona{
 		return $resp; 
 	}
 
+	public function listar($condicion = ""){
+		$arregloResponsables = [];
+		$base = new BaseDatos();
+		$consultaResponsables = "SELECT * FROM responsable ";
+	
+		if ($condicion != "") {
+			$consultaResponsables .= ' WHERE ' . $condicion;
+		}
+	
+		$consultaResponsables .= " ORDER BY apellido";
+	
+		if ($base->Iniciar()) {
+			if ($base->Ejecutar($consultaResponsables)) {
+				$arregloResponsables = [];
+				while ($row = $base->Registro()) {
+					$responsable = new ResponsableV();
+					$responsable->setNroEmpleado($row['rnumeroempleado']);
+					$responsable->setNroLicencia($row['rnumerolicencia']);
+					$responsable->setNroDoc($row['rdocumento']);
+					// $responsable->setTelefono($row['telefono']); 
+	
+					array_push($arregloResponsables, $responsable);
+				}
+			} else {
+				$this->setmensajeoperacion($base->getError());
+			}
+		} else {
+			$this->setmensajeoperacion($base->getError());
+		}
+	
+		return $arregloResponsables;
+	}
+
 }

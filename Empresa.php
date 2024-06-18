@@ -7,10 +7,10 @@ class Empresa{
     private $arregloViajes;
 
 
-    public function __construct(){
-        $this->idEmpresa = "";
-        $this->nombreEm = "";
-        $this->domicilioEm = "";
+    public function __construct($idEmpresa, $nombreEm, $domicilioEm){
+        $this->idEmpresa = $idEmpresa;
+        $this->nombreEm = $nombreEm;
+        $this->domicilioEm = $domicilioEm;
         $this->arregloViajes = [];
     }
 
@@ -50,6 +50,37 @@ class Empresa{
         return "Id empresa: " . $this->getIdEmpresa() . "\n" . 
         "Nombre empresa: " . $this->getNombreEmpresa() . "\n" . 
         "Domicilio: " . $this->getDomicilioEmpresa() . "\n". 
-        "Coleccion de Viajes: ". $this->getArregloViajes(). "\n";
+        "Coleccion de Viajes: ". $this->mostrarColeccionViajes($this->getArregloViajes()). "\n";
+    }
+
+    private function mostrarColeccionViajes($coleccion){
+        $retorno = "";
+        foreach ($coleccion as $obj) {
+            $retorno .= $obj . "\n";
+            $retorno .= "----------------------------------------------------------------------\n";
+        }
+        return $retorno;
+    }
+
+    public function incorporarViaje($viaje) {
+        // Verificar si el $viaje ya existe en la empresa utilizando la función Buscar
+        $existeViaje = $this->Buscar($viaje->getIdViaje());
+        $seAgrego = true;
+        if ($existeViaje) {
+            echo "Error: El viaje con ID:". $viaje->getIdViaje(). " ya existe en la empresa.\n";
+            $seAgrego= false;
+        }
+        $this->arregloViajes[] = $viaje;
+        return $seAgrego; // Indica que el viaje se agregó correctamente
+    }
+
+    public function Buscar($idViaje) {
+        $bandera = false;
+        foreach ($this->arregloViajes as $viaje) {
+            if ($viaje->getIdViaje() == $idViaje) {
+                $bandera = true; 
+            }
+        }
+        return $bandera; 
     }
 }
