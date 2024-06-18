@@ -110,8 +110,4 @@ function modificarViaje(){
 
 
 
-
-
-echo " HOLAAAAAAAAAAAAAAAAAAAAAA"
-
 ?>
