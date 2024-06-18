@@ -126,9 +126,15 @@ function mostrarDatosViaje($objEmpresa){
     $viajeEncontrado = null;
     $colViajes = $objEmpresa->getArregloViajes();
 
+
+
     
 
-    foreach ($colViajes as $viaje){
+    
+
+
+
+foreach ($colViajes as $viaje){
         if ($viaje->getIdViaje() == $idViaje){
                 $viajeEncontrado = $viaje;
                 break;
@@ -143,10 +149,6 @@ function mostrarDatosViaje($objEmpresa){
         }
     }
 }
-
-
-
-
 
 
 
