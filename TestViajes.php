@@ -128,21 +128,19 @@ function mostrarDatosViaje($objEmpresa){
 
     foreach ($colViajes as $viaje){
         if ($viaje->getIdViaje() == $idViaje){
-                $viajeEncontrado = $viaje-> __toString();
+                $viajeEncontrado = $viaje;
                 break;
             } 
-            if($viajeEncontrado !== null){
-                echo $viajeEncontrado;
-        }else {
-            echo "No se encontró el viaje con el ID especificado. \n";
+        if ($viajeEncontrado == null){
+            echo  "No se encontró el viaje con el ID especificado.\n";
         }
-        return $viajeEncontrado;
+        else{
+            echo "VIAJE ENCONTRADO: \n";
+
+            echo $viajeEncontrado;
+        }
     }
 }
-
-
-
-
 
 
 
