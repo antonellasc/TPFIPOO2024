@@ -126,6 +126,8 @@ function mostrarDatosViaje($objEmpresa){
     $viajeEncontrado = null;
     $colViajes = $objEmpresa->getArregloViajes();
 
+    
+
     foreach ($colViajes as $viaje){
         if ($viaje->getIdViaje() == $idViaje){
                 $viajeEncontrado = $viaje;
@@ -135,12 +137,12 @@ function mostrarDatosViaje($objEmpresa){
             echo  "No se encontró el viaje con el ID especificado.\n";
         }
         else{
-            echo "Viaje encontrado: \n";
+            echo "VIAJE ENCONTRADO: \n";
+
             echo $viajeEncontrado;
         }
     }
 }
-
 
 
 
