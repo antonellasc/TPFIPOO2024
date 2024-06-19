@@ -89,12 +89,13 @@ class Viaje{
         return $retorno;
     }
 
-    public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable, $vImporte)
+    public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable,$arregloPasajeros, $vImporte)
     {
         $this->setIdViaje($idViaje);
         $this->setDestino($vDestino);
         $this->setCantMaxPasajeros($cantMaxPasajeros);
         $this->setObjResponsable($obj_Responsable);
+        $this->setColPasajeros($arregloPasajeros);
         $this->setImporte($vImporte);
     }
 

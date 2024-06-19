@@ -110,13 +110,22 @@ function ingresarNuevoViaje($objEmpresa){
     }
 
     //agrega Pasajeros
-    insertarPasajeros($idViaje);
+    echo "¿Desea ingresar datos de pasajeros al viaje? (s/n): ";
+    $rta = strtolower(trim(fgets(STDIN)));
+    if ($rta == 's') {
+        $objResponsable = insertarPasajeros($idViaje);
+        $pasajerosOperacion = new Pasajero();
+        $condicion = "idviaje = $idViaje";
+        $coleccionPasajeros = $pasajerosOperacion->listar($condicion);
+    }else{
+        $coleccionPasajeros = null;
+    }
 
     echo "Ingrese el importe del viaje: ";
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar($idViaje, $destino, $cantMaxPasajeros,$objResponsable, $importe);
+    $viaje->cargar($idViaje, $destino, $cantMaxPasajeros,$objResponsable,$coleccionPasajeros, $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
