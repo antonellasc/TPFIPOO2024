@@ -105,7 +105,7 @@ class Viaje{
         $this->mensajeoperacion= $mensajeoperacion;
     }
 
-    public function listar($condicion = "")
+    public function Listar($condicion = "")
     {
         $arregloViajes = [];
         $base = new BaseDatos();
@@ -194,5 +194,101 @@ class Viaje{
         }
 
         return $resp;
+    }
+
+    public function Insertar(){
+        $base = new BaseDatos();
+        $resp = false;
+        $destino = $this->getDestino();
+        $max_pasajeros = $this->getCantMaxPasajeros();
+        $importe = $this->getImporte();
+
+        $consulta_insertar = "INSERT INTO viaje(vdestino, vcantmaxpasajeros, vimporte)
+		VALUES ('{$destino}', '{$max_pasajeros}', '{$importe}')";
+
+        if ($base->Iniciar()) {
+            $idViaje = $base->devuelveIDInsercion($consulta_insertar);
+            if ($idViaje) {
+                $this->setIdViaje($idViaje);
+                $resp = true;
+            } else {
+                $this->setMensajeOperacion($base->getError());
+            }
+        } else {
+            $this->setMensajeOperacion($base->getError());
+        }
+        return $resp;
+    }
+
+    public function Modificar($id_viaje){
+        $resp = false;
+        $base = new BaseDatos();
+
+        $consultaModificar = "UPDATE viaje 
+        SET vdestino = '" . $this->getDestino() . 
+        "', vcantmaxpasajeros = '" . $this->getCantMaxPasajeros() . 
+        "', vimporte = '" .$this->getImporte(). 
+        "' WHERE idviaje = " . $id_viaje;
+
+        if($base->Iniciar()){
+            if($base->Ejecutar($consultaModificar)){
+                $resp = true;
+            }else{
+                $this->setmensajeoperacion($base->getError());
+            }
+        }else{
+            $this->setmensajeoperacion($base->getError());
+        }
+        return $resp;
+    }
+
+    public function Eliminar (){
+        $base = new BaseDatos();
+        $resp = false;
+        
+        if($base->Iniciar()){
+            $consultaEliminar = "DELETE FROM viaje WHERE idviaje = " . $this->getIdViaje();
+            if($base->Ejecutar(($consultaEliminar))){
+                $resp = true;
+            } else {
+                $this->setmensajeoperacion($base->getError());
+            }
+        }else{
+            $this->setmensajeoperacion($base->getError());
+        }
+        return $resp;
+    }
+
+
+    public function agregarPasajeros($nuevoNombre,$nuevaApellido,$nuevoTelefono, $nuevoDoc, $nuevaFrec, $idViaje){
+        $seAgrego = false;
+
+        $pasajeros = new Pasajero();
+        $hayPasajeroRepetido = $pasajeros->Buscar($nuevoDoc);
+        
+        if(!$hayPasajeroRepetido){
+            $pasajeros->setNroPFrecuente($nuevaFrec);
+            $pasajeros->setObjViaje($idViaje);
+            $pasajeros->cargar($nuevoDoc, $nuevoNombre, $nuevaApellido, $nuevoTelefono);
+            $seAgrego = true; 
+        }
+
+        return $seAgrego ;
+    }
+
+    public function agregarResponsable($nombre, $apellido, $nroDoc, $telefono, $numEmpleado){
+        $seAgrego = false;
+
+        $responsable = new ResponsableV();
+        $hayRepetido = $responsable->Buscar($nroDoc);
+        
+        if(!$hayRepetido){
+            $responsable->setTelefono($telefono);
+            $responsable->setNroLicencia($numEmpleado);
+            $responsable->cargar($nroDoc,$nombre, $apellido, $telefono);
+            $seAgrego = true; 
+        }
+
+        return $seAgrego ;
     }
 }

@@ -4,14 +4,12 @@ class Empresa{
     private $idEmpresa;
     private $nombreEm;
     private $domicilioEm;
-    private $arregloViajes;
     private $mensajeoperacion;
 
-    public function __construct($idEmpresa, $nombreEm, $domicilioEm){
+    public function __construct(){
         $this->idEmpresa = "";
         $this->nombreEm = "";
         $this->domicilioEm = "";
-        $this->arregloViajes = [];
     }
 
     public function getIdEmpresa(){
@@ -26,10 +24,6 @@ class Empresa{
         return $this->domicilioEm;
     }
 
-    public function getArregloViajes(){
-        return $this->arregloViajes;
-    }
-
     public function setIdEmpresa($idE){
         $this->idEmpresa = $idE;
     }
@@ -40,10 +34,6 @@ class Empresa{
 
     public function setDomicilioEmpresa($eDomicilio){
         $this->domicilioEm = $eDomicilio;
-    }
-
-    public function setArregloViajes($arregloViajes){
-        $this->arregloViajes = $arregloViajes;
     }
 
     public function getmensajeoperacio(){
@@ -57,47 +47,14 @@ class Empresa{
     public function __toString(){
         return "Id empresa: " . $this->getIdEmpresa() . "\n" . 
         "Nombre empresa: " . $this->getNombreEmpresa() . "\n" . 
-        "Domicilio: " . $this->getDomicilioEmpresa() . "\n". 
-        "Coleccion de Viajes: ". $this->mostrarColeccionViajes($this->getArregloViajes()). "\n";
-    }
-
-    private function mostrarColeccionViajes($coleccion){
-        $retorno = "";
-        foreach ($coleccion as $obj) {
-            $retorno .= $obj . "\n";
-            $retorno .= "----------------------------------------------------------------------\n";
-        }
-        return $retorno;
-    }
-
-    public function incorporarViaje($viaje) {
-        // Verificar si el $viaje ya existe en la empresa utilizando la función Buscar
-        $existeViaje = $this->Buscar($viaje->getIdViaje());
-        $seAgrego = true;
-        if ($existeViaje) {
-            echo "Error: El viaje con ID:". $viaje->getIdViaje(). " ya existe en la empresa.\n";
-            $seAgrego= false;
-        }
-        $this->arregloViajes[] = $viaje;
-        return $seAgrego; // Indica que el viaje se agregó correctamente
-    }
-
-    public function Buscar($idViaje) {
-        $bandera = false;
-        foreach ($this->arregloViajes as $viaje) {
-            if ($viaje->getIdViaje() == $idViaje) {
-                $bandera = true; 
-            }
-        }
-        return $bandera; 
+        "Domicilio: " . $this->getDomicilioEmpresa() . "\n";
     }
 
     // funciones sql
-    public function cargar($idE, $enombre, $edomicilio, $colviajes){
+    public function cargar($idE, $enombre, $edomicilio){
         $this->setIdEmpresa($idE);
 		$this->setNombreEmpresa($enombre);
 		$this->setDomicilioEmpresa($edomicilio);
-        $this->setArregloViajes($colviajes);
     }
 
     public function buscar($id){
@@ -144,7 +101,7 @@ class Empresa{
 					$direccion=$row2['edireccion'];
 					
 				
-					$empr=new Empresa();
+					$empr = new Empresa();
 					$empr->cargar($id,$nombre,$direccion, []);
 					array_push($arreglo,$empr);
 	
