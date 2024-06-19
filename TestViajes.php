@@ -293,10 +293,32 @@ function eliminarDatosViaje(){
 function eliminarDatosResponsable(){
 
 }
+    function eliminarDatosPasajero(){
 
-function eliminarDatosPasajero(){
-
-}
+        $pasajero = new Pasajero();
+        $colPasajeros = $pasajero->listar();
+    
+        echo "Listado de pasajeros: \n";
+        foreach($colPasajeros as $unPasajero){
+            echo "\n". $unPasajero ."\n";
+            echo "*************\n";
+        }
+        if(count($colPasajeros) > 0 ){
+            echo "Ingrese el DNI del pasajero a eliminar: \n";
+            $dniPasajero = trim(fgets(STDIN));
+            if($dniPasajero != null && $pasajero->Buscar($dniPasajero)){
+                if($pasajero->eliminar()){
+                    echo "Se elimino el pasajero con exito!\n";
+                } else {
+                    echo "Ocurrió un error al intentar eliminar el pasajero.\n";
+                }
+            } else {
+                echo "El pasajero con DNI $dniPasajero no existe.\n";
+            }
+        } else {
+            echo "Debe ingresar un DNI válido.\n";
+        }
+    }
 
 
 // function mostrarDatosViaje($objEmpresa){
