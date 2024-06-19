@@ -1,10 +1,11 @@
 <?php
 
-include 'Persona.php';
-include 'Pasajero.php';
-include 'ResponsableV.php';
-include 'Viaje.php';
-include 'Empresa.php';
+include_once 'BaseDatos.php';
+include_once 'Persona.php';
+include_once 'Pasajero.php';
+include_once 'ResponsableV.php';
+include_once 'Viaje.php';
+include_once 'Empresa.php';
 
 $objEmpresa = New Empresa(1906, "Viaje Feliz", "Belgrano 10");
 $objViaje = New Viaje();
@@ -100,6 +101,7 @@ function ingresarNuevoViaje($objEmpresa){
     $destino = trim(fgets(STDIN));
     echo "Ingrese la cantidad máxima de pasajeros: ";
     $cantMaxPasajeros = trim(fgets(STDIN));
+    $idEmp = $objEmpresa->getIdEmpresa();
 
     echo "¿Desea ingresar datos del responsable del viaje? (s/n): ";
     $rta = strtolower(trim(fgets(STDIN)));
@@ -125,7 +127,7 @@ function ingresarNuevoViaje($objEmpresa){
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar($idViaje, $destino, $cantMaxPasajeros,$objResponsable,$coleccionPasajeros, $importe);
+    $viaje->cargar($idViaje, $destino, $cantMaxPasajeros,$objResponsable, $idEmp, $coleccionPasajeros, $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
@@ -297,26 +299,46 @@ function eliminarDatosPasajero(){
 }
 
 
-function mostrarDatosViaje($objEmpresa){
-    echo "Ingrese el id del viaje: ";
-    $idViaje = trim(fgets(STDIN));
-    $viajeEncontrado = null;
-    $colViajes = $objEmpresa->getArregloViajes();
+// function mostrarDatosViaje($objEmpresa){
+//     echo "Ingrese el id del viaje: ";
+//     $idViaje = trim(fgets(STDIN));
+//     $viajeEncontrado = null;
+//     $colViajes = $objEmpresa->getArregloViajes();
 
-    foreach ($colViajes as $viaje){
-        if ($viaje->getIdViaje() == $idViaje){
-                $viajeEncontrado = $viaje;
-                break;
-            } 
-        if ($viajeEncontrado == null){
-            echo  "No se encontró el viaje con el ID especificado.\n";
-        }
-        else{
-            echo "VIAJE ENCONTRADO: \n";
+//     foreach ($colViajes as $viaje){
+//         if ($viaje->getIdViaje() == $idViaje){
+//                 $viajeEncontrado = $viaje;
+//                 break;
+//             } 
+//         if ($viajeEncontrado == null){
+//             echo  "No se encontró el viaje con el ID especificado.\n";
+//         }
+//         else{
+//             echo "VIAJE ENCONTRADO: \n";
 
-            echo $viajeEncontrado;
-        }
+//             echo $viajeEncontrado;
+//         }
+//     }
+// }
+
+function mostrarDatosViaje($objViaje){
+    $viajeInfo = null;
+    $condicion = "' idviaje = ";
+	echo "Ingrese el id del viaje que desea ver: \n";
+	$id = trim(fgets(STDIN));
+	if(!is_numeric($id) || $id == ""){
+		echo "Por favor, ingrese un valor numérico. \n";
+	}else{
+        $condicion = $condicion . $id . " '";
+		$viajeInfo = $objViaje->Listar($condicion);
     }
+
+		if($viajeInfo != null){
+          $retornaViaje = $objViaje->mostrarColeccion($viajeInfo); 
+		  echo $retornaViaje;  
+		}else{
+          echo "No existe un viaje con ese id. \n";  
+		}
 }
 
 ?>

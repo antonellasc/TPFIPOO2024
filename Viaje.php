@@ -5,6 +5,7 @@ class Viaje{
     private $destino;
     private $cantMaxPasajeros;
     private $objResponsable;
+    private $objEmpresa;
     private $arrayPasajeros;
     private $importe;
     private $mensajeoperacion;
@@ -16,6 +17,7 @@ class Viaje{
         $this->destino = "";
         $this->cantMaxPasajeros = "";
         $this->objResponsable = "";
+        $this->objEmpresa = "";
         $this->arrayPasajeros = [];
         $this->importe = "";
     }
@@ -35,6 +37,10 @@ class Viaje{
 
     public function getObjResponsable(){
         return $this->objResponsable;
+    }
+
+    public function getObjEmpresa(){
+        return $this->objEmpresa;
     }
 
     public function getColPasajeros(){
@@ -62,6 +68,10 @@ class Viaje{
         $this->objResponsable = $obj_Responsable;
     }
 
+    public function setObjEmpresa($obj_Empresa){
+        $this->objEmpresa = $obj_Empresa;
+    }
+
     public function setColPasajeros($colPasajeros){
         $this->arrayPasajeros = $colPasajeros;
     }
@@ -76,11 +86,12 @@ class Viaje{
         "Destino: " . $this->getDestino() . "\n" . 
         "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
         "Responsable del viaje: \n" . $this->getObjResponsable() . 
+        "Id empresa de viajes: " . $this->getObjEmpresa() . 
         "Pasajeros: \n" . $this->mostrarColeccion($this->getColPasajeros()) . "\n" . 
         "Importe del viaje: $" . $this->getImporte() . "\n";
     }
 
-    private function mostrarColeccion($coleccion){
+    public function mostrarColeccion($coleccion){
         $retorno = "";
         foreach ($coleccion as $obj) {
             $retorno .= $obj . "\n";
@@ -89,17 +100,18 @@ class Viaje{
         return $retorno;
     }
 
-    public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable,$arregloPasajeros, $vImporte)
+    public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable, $obj_Empresa, $arregloPasajeros, $vImporte)
     {
         $this->setIdViaje($idViaje);
         $this->setDestino($vDestino);
         $this->setCantMaxPasajeros($cantMaxPasajeros);
         $this->setObjResponsable($obj_Responsable);
+        $this->setObjEmpresa($obj_Empresa);
         $this->setColPasajeros($arregloPasajeros);
         $this->setImporte($vImporte);
     }
 
-    public function getmensajeoperacio(){
+    public function getmensajeoperacion(){
         return $this->mensajeoperacion;
     }
     public function setmensajeoperacion($mensajeoperacion){
@@ -116,7 +128,7 @@ class Viaje{
             $consultaViajes .= ' WHERE ' . $condicion;
         }
 
-        $consultaViajes .= " ORDER BY destino";
+        $consultaViajes .= " ORDER BY vdestino";
 
         if ($base->Iniciar()) {
             if ($base->Ejecutar($consultaViajes)) {
@@ -127,6 +139,11 @@ class Viaje{
                     $viaje->setDestino($row['vdestino']);
                     $viaje->setCantMaxPasajeros($row['vcantmaxpasajeros']);
 
+                    $idEmpresa = $row['idempresa']; 
+                    $empresa = new Empresa();
+                    if ($empresa->buscar($idEmpresa)) {
+                        $this->setObjEmpresa($empresa);
+                    }
                     $idResponsable = $row['rnumeroempleado']; 
                     $responsable = new ResponsableV();
                     if ($responsable->Buscar($idResponsable)) {
@@ -169,7 +186,11 @@ class Viaje{
                     if ($responsable->Buscar($idResponsable)) {
                         $this->setObjResponsable($responsable);
                     }
-
+                    $idEmpresa = $row['idempresa']; 
+                    $empresa = new Empresa();
+                    if ($empresa->Buscar($idEmpresa)) {
+                        $this->setObjEmpresa($empresa);
+                    }
 
                     // Cargar el arreglo de Pasajeros asociados al viaje
                     $consultaPasajeros = "SELECT * FROM pasajero WHERE idviaje = " . $idViaje;

@@ -50,6 +50,15 @@ class Empresa{
         "Domicilio: " . $this->getDomicilioEmpresa() . "\n";
     }
 
+	public function mostrarColeccion($coleccion){
+        $retorno = "";
+        foreach ($coleccion as $obj) {
+            $retorno .= $obj . "\n";
+            $retorno .= "----------------------------------------------------------------------\n";
+        }
+        return $retorno;
+    }
+	
     // funciones sql
     public function cargar($idE, $enombre, $edomicilio){
         $this->setIdEmpresa($idE);
