@@ -118,7 +118,7 @@ class ResponsableV extends Persona{
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="'DELETE FROM responsable WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
+				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
 				if($base->Ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{

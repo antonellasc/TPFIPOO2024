@@ -72,13 +72,13 @@ do{
             $opviaje = opcionesModViaje();
             switch ($opviaje) {
                 case 1:
-                    eliminarDatosViaje($valor);
+                    eliminarDatosViaje();
                     break;
                 case 2:
                     eliminarDatosResponsable();
                     break;
                 case 3:
-                    eliminarDatosPasajero($valor, $objPasajero);
+                    eliminarDatosPasajero();
                     break;
             }
             break;
@@ -287,24 +287,70 @@ function insertarResponsable(){
 
 //elimina datos de un viaje (OPCION 4)
 function eliminarDatosViaje(){
+    $viaje = new Viaje();
+    $colViajes = $viaje->listar();
+    echo "Listado de viajes: \n";
+    foreach($colViajes as $unViaje){
+        echo "\n". $unViaje ."\n";
+        echo "*************\n";
+    }
+    
+    if(count($colViajes) > 0 ){
+        echo "Ingrese el id del viaje a eliminar: \n";
+        $idViaje = trim(fgets(STDIN));
 
+        if((is_numeric ($idViaje)) && $idViaje != "" && $viaje->Buscar($idViaje)){
+            if($viaje->eliminar()){
+                echo "Se elimino el viaje con exito!\n";
+            } else {
+                echo "Ocurrió un error al intentar eliminar el viaje.\n";
+            }
+        } else {
+            echo "El viaje con id $idViaje no existe.\n";
+        }
+    } else {
+        echo "No se encuentran viajes registrados.\n";
+    }
 }
+
 
 function eliminarDatosResponsable(){
+    $responsable = new ResponsableV();
+    $colResponsable = $responsable->listar();
+    echo "Listado de responsables: \n";
 
+    foreach($colResponsable as $unResponsable){
+        echo "\n". $unResponsable ."\n";
+        echo "*************\n";
+    }
+    if(count($colResponsable) > 0){ 
+        echo "Ingrese el numero de empleado del responsable a eliminar: \n";
+        $nroResponsable = trim(fgets(STDIN));
+        if(is_numeric($nroResponsable) && $nroResponsable != " " && $responsable->buscar($nroResponsable)){
+            if($responsable->eliminar()){
+                echo "Se elimino el responsable con exito!\n";
+            } else{
+                echo "Ocurrió un error al intentar eliminar el responsable.\n";
+            }
+        }else{
+            echo "El numero de empleado $nroResponsable no existe.\n";
+        }
+    }else{
+        echo "No se encuentran responsables registrados.\n";
+    }
 }
-    function eliminarDatosPasajero(){
 
+    function eliminarDatosPasajero(){
         $pasajero = new Pasajero();
         $colPasajeros = $pasajero->listar();
-    
+
         echo "Listado de pasajeros: \n";
         foreach($colPasajeros as $unPasajero){
             echo "\n". $unPasajero ."\n";
             echo "*************\n";
         }
         if(count($colPasajeros) > 0 ){
-            echo "Ingrese el DNI del pasajero a eliminar: \n";
+            echo "Ingrese el numero de documento del pasajero a eliminar: \n";
             $dniPasajero = trim(fgets(STDIN));
             if($dniPasajero != null && $pasajero->Buscar($dniPasajero)){
                 if($pasajero->eliminar()){
@@ -313,10 +359,10 @@ function eliminarDatosResponsable(){
                     echo "Ocurrió un error al intentar eliminar el pasajero.\n";
                 }
             } else {
-                echo "El pasajero con DNI $dniPasajero no existe.\n";
+                echo "El pasajero con numero de documento: $dniPasajero no existe.\n";
             }
         } else {
-            echo "Debe ingresar un DNI válido.\n";
+            echo "No existen pasajeros registrados.\n";
         }
     }
 
