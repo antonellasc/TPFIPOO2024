@@ -37,7 +37,7 @@ class Pasajero extends Persona {
     public function cargar($datosPasajero){
         parent :: cargar($datosPasajero);
 		$this->setNroPFrecuente($datosPasajero['nropfrecuente']);
-		$this->setObjViaje($datosPasajero['obj_viaje']);
+		$this->setObjViaje($datosPasajero['idviaje']);
     }
 
 	public function getmensajeoperacion()
@@ -115,12 +115,13 @@ class Pasajero extends Persona {
         	$base=new BaseDatos();
 		    $resp= false;
 		    $docPasajero = parent::getNroDoc();
+			$viaje = new Viaje();
 
 			if(parent :: insertar()){
-				$idReferenciaViaje = $this->getObjViaje()->getIdViaje();
+				$idReferenciaViaje = $viaje->getIdViaje();
 
 				$consultaInsertar="INSERT INTO pasajero(nrodoc, nropfrecuente, idviaje) 
-                VALUES ('".$docPasajero."','".$this->getNroPFrecuente()."','".$idReferenciaViaje."')";
+                VALUES ('".$docPasajero."','".$this->getNroPFrecuente()."','" . $idReferenciaViaje . "')";
 				if($base->Iniciar()){
 
 					if($base->Ejecutar($consultaInsertar)){

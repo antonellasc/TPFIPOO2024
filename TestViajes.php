@@ -103,12 +103,13 @@ function ingresarNuevoViaje(){
     $idEmp = $objEmpresa->getIdEmpresa();
 
     $responsable =insertarResponsable();
+    $nroResp = $responsable->getNroEmpleado();
 
     echo "Ingrese el importe del viaje: ";
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar(null, $destino, $cantMaxPasajeros, $responsable, $objEmpresa, $importe);
+    $viaje->cargar(null, $destino, $cantMaxPasajeros, $idEmp, $nroResp, null, $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
@@ -243,12 +244,15 @@ function insertarPasajeros($idViaje){
 
 function insertarResponsable(){
     $persona = new Persona();
+    $estaRepetido = false;
     do{
         echo "Ingrese el número de documento del responsable: ";
         $nroDoc = trim(fgets(STDIN));
         $estaRepetido = $persona->Buscar($nroDoc);
         if($estaRepetido){
             echo "La persona ya estaba previamente registrada, ingrese otro.\n";
+        }else{
+            $estaRepetido = false;
         }
     }while($estaRepetido == true);
     
@@ -257,20 +261,21 @@ function insertarResponsable(){
             $nombre = trim(fgets(STDIN));
             echo "Ingrese el apellido del responsable: ";
             $apellido = trim(fgets(STDIN));
-            echo "Ingrese el número de documento del responsable: ";
-            $nroDoc = trim(fgets(STDIN));
+            // echo "Ingrese el número de documento del responsable: ";
+            // $nroDoc = trim(fgets(STDIN));
             echo "Ingrese el teléfono del responsable: ";
             $telefono = trim(fgets(STDIN));
-            echo "Ingrese Nro de empleado:";
-            $numEmpleado = trim(fgets(STDIN));
+            // echo "Ingrese Nro de empleado:";
+            // $numEmpleado = trim(fgets(STDIN));
             echo "Ingrese Nro de Licencia: ";
-    $numLicencia = trim(fgets(STDIN));
+            $numLicencia = trim(fgets(STDIN));
 
-        $responsable = new ResponsableV();
-        $responsable->setNroEmpleado($numEmpleado);
-        $responsable->setNroLicencia($numEmpleado);
-        $responsable->cargar($nombre, $apellido, $nroDoc, $telefono, $numEmpleado);
-        $bandera = $responsable->insertar();
+            $responsable = new ResponsableV();
+            $responsable->setNroEmpleado(null);
+            $responsable->setNroLicencia($numLicencia);
+            $datosResp = ['nombre' => $nombre, 'apellido' => $apellido, 'nrodoc' => $nroDoc, 'telefono' => $telefono, 'rnumeroempleado' => null, 'rnumerolicencia' => $numLicencia];
+            $responsable->cargar($datosResp);
+            $bandera = $responsable->insertar();
 
     if($bandera){
         echo "Responsable del Viaje agregado!"."\n";
@@ -323,13 +328,13 @@ function eliminarDatosResponsable(){
         echo "Ingrese el numero de empleado del responsable a eliminar: \n";
         $nroResponsable = trim(fgets(STDIN));
         if(is_numeric($nroResponsable) && $nroResponsable != " " && $responsable->buscar($nroResponsable)){
-            if($responsable->eliminar()){
+            if($responsable->eliminar($responsable->getNroDoc())){
                 echo "Se elimino el responsable con exito!\n";
             } else{
                 echo "Ocurrió un error al intentar eliminar el responsable.\n";
             }
         }else{
-            echo "El numero de empleado $nroResponsable no existe.\n";
+            echo "El numero de empleado " . $nroResponsable . "no existe.\n";
         }
     }else{
         echo "No se encuentran responsables registrados.\n";
@@ -349,13 +354,13 @@ function eliminarDatosResponsable(){
             echo "Ingrese el numero de documento del pasajero a eliminar: \n";
             $dniPasajero = trim(fgets(STDIN));
             if($dniPasajero != null && $pasajero->Buscar($dniPasajero)){
-                if($pasajero->eliminar()){
-                    echo "Se elimino el pasajero con exito!\n";
+                if($pasajero->eliminar($dniPasajero)){
+                    echo "Se eliminó el pasajero con exito!\n";
                 } else {
                     echo "Ocurrió un error al intentar eliminar el pasajero.\n";
                 }
             } else {
-                echo "El pasajero con numero de documento: $dniPasajero no existe.\n";
+                echo "El pasajero con numero de documento: " . $dniPasajero . "no existe.\n";
             }
         } else {
             echo "No existen pasajeros registrados.\n";

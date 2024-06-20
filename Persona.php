@@ -63,9 +63,9 @@ class Persona {
 	}
 
     public function cargar($datosPersona){		
-		$this->setNrodoc($datosPersona['nrodoc']);
 		$this->setNombre($datosPersona['nombre']);
 		$this->setApellido($datosPersona['apellido']);
+		$this->setNroDoc($datosPersona['nrodoc']);
 		$this->setTelefono($datosPersona['telefono']);
     }
 
