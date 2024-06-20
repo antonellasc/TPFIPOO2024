@@ -62,11 +62,11 @@ class Persona {
 		$this->mensajeoperacion=$mensajeoperacion;
 	}
 
-    public function cargar($NroD, $Nom, $Ape, $telefono){		
-		$this->setNrodoc($NroD);
-		$this->setNombre($Nom);
-		$this->setApellido($Ape);
-		$this->setTelefono($telefono);
+    public function cargar($datosPersona){		
+		$this->setNrodoc($datosPersona['nrodoc']);
+		$this->setNombre($datosPersona['nombre']);
+		$this->setApellido($datosPersona['apellido']);
+		$this->setTelefono($datosPersona['telefono']);
     }
 
     public function Buscar($dni){
@@ -108,15 +108,18 @@ class Persona {
 			if($base->Ejecutar($consultaPersonas)){				
 				$arreglo= array();
 				while($row2=$base->Registro()){
-					
-					$NroDoc=$row2['nrodoc'];
-					$Nombre=$row2['nombre'];
-					$Apellido=$row2['apellido'];
-					$Telefono=$row2['telefono'];
-				
-					$perso=new Persona();
-					$perso->cargar($NroDoc,$Nombre,$Apellido,$Telefono);
-					array_push($arreglo,$perso);
+
+					$datosPersona = [
+						'nrodoc' => $row2['nrodoc'],
+						'nombre' => $row2['nombre'],
+						'apellido' => $row2['apellido'],
+						'telefono' => $row2['telefono']
+					];
+
+					$persona=new Persona();
+					$persona->cargar($datosPersona);
+					array_push($arreglo,$persona);
+	
 	
 				}
 				
@@ -176,7 +179,7 @@ class Persona {
 		return $resp;
 	}
 
-    public function eliminar(){
+    public function eliminar($nroDoc){
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){

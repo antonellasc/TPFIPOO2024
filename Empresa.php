@@ -111,7 +111,7 @@ class Empresa{
 					
 				
 					$empr = new Empresa();
-					$empr->cargar($id,$nombre,$direccion, []);
+					$empr->cargar($id,$nombre,$direccion);
 					array_push($arreglo,$empr);
 	
 				}
@@ -137,12 +137,12 @@ class Empresa{
 		    if($base->Iniciar()){
 
 			if($base->Ejecutar($consultaInsertar)){
-
-			    $resp=  true;
-
-			}	else {
+				if($idEmpresa = $base->devuelveIDInsercion($consultaInsertar)){
+					$this->setIdEmpresa($idEmpresa);
+					$resp=  true;
+				}else {
 					$this->setmensajeoperacion($base->getError());
-					
+				}	
 			}
         
 		        } else {

@@ -44,7 +44,7 @@ do{
     $opcion = opciones();
     switch ($opcion) {
         case 1:
-            ingresarNuevoViaje($objEmpresa);
+            ingresarNuevoViaje();
             break;
         case 2:
             $valor = seleccionarIdViaje($objViaje);
@@ -86,48 +86,29 @@ do{
             mostrarDatosViaje($objEmpresa);
             break;
         case 6:
-            echo "-------------------- FIN DEL PROGRAMA --------------------" ;
+            echo "----------------- FIN DEL PROGRAMA -----------------" ;
             break;
     }
 
 } while ($opcion != 6);
 
 //OPCION 1
-function ingresarNuevoViaje($objEmpresa){
-    // Solicitar al usuario el ingreso de datos para crear un nuevo viaje
-    echo "Ingrese codigo del Viaje: ";
-    $idViaje = trim(fgets(STDIN));
+function ingresarNuevoViaje(){
     echo "Ingrese el destino del viaje: ";
     $destino = trim(fgets(STDIN));
     echo "Ingrese la cantidad máxima de pasajeros: ";
     $cantMaxPasajeros = trim(fgets(STDIN));
+
+    $objEmpresa = new Empresa();
     $idEmp = $objEmpresa->getIdEmpresa();
 
-    echo "¿Desea ingresar datos del responsable del viaje? (s/n): ";
-    $rta = strtolower(trim(fgets(STDIN)));
-    if ($rta == 's') {
-        $objResponsable = insertarResponsable();
-    }else{
-        $objResponsable = null;
-    }
-
-    //agrega Pasajeros
-    echo "¿Desea ingresar datos de pasajeros al viaje? (s/n): ";
-    $rta = strtolower(trim(fgets(STDIN)));
-    if ($rta == 's') {
-        $objResponsable = insertarPasajeros($idViaje);
-        $pasajerosOperacion = new Pasajero();
-        $condicion = "idviaje = $idViaje";
-        $coleccionPasajeros = $pasajerosOperacion->listar($condicion);
-    }else{
-        $coleccionPasajeros = null;
-    }
+    $responsable =insertarResponsable();
 
     echo "Ingrese el importe del viaje: ";
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar($idViaje, $destino, $cantMaxPasajeros,$objResponsable, $idEmp, $coleccionPasajeros, $importe);
+    $viaje->cargar(null, $destino, $cantMaxPasajeros, $responsable, $objEmpresa, $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
@@ -261,6 +242,17 @@ function insertarPasajeros($idViaje){
 }
 
 function insertarResponsable(){
+    $persona = new Persona();
+    do{
+        echo "Ingrese el número de documento del responsable: ";
+        $nroDoc = trim(fgets(STDIN));
+        $estaRepetido = $persona->Buscar($nroDoc);
+        if($estaRepetido){
+            echo "La persona ya estaba previamente registrada, ingrese otro.\n";
+        }
+    }while($estaRepetido == true);
+    
+    if($estaRepetido == false){
     echo "Ingrese el nombre del responsable: ";
             $nombre = trim(fgets(STDIN));
             echo "Ingrese el apellido del responsable: ";
@@ -274,15 +266,19 @@ function insertarResponsable(){
             echo "Ingrese Nro de Licencia: ";
     $numLicencia = trim(fgets(STDIN));
 
-    $operacionViaje = new Viaje();
-    $bandera= $operacionViaje->agregarResponsable($nombre, $apellido, $nroDoc, $telefono, $numEmpleado);
+        $responsable = new ResponsableV();
+        $responsable->setNroEmpleado($numEmpleado);
+        $responsable->setNroLicencia($numEmpleado);
+        $responsable->cargar($nombre, $apellido, $nroDoc, $telefono, $numEmpleado);
+        $bandera = $responsable->insertar();
+
     if($bandera){
         echo "Responsable del Viaje agregado!"."\n";
-        return $numEmpleado;
+            return $responsable;
     }else {
         echo "El Responsable del viaje no se pudo agregar\n";
     }
-
+    }
 }
 
 //elimina datos de un viaje (OPCION 4)
