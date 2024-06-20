@@ -45,7 +45,7 @@ class ResponsableV extends Persona{
 		$resp= false;
 
 		if($resp = parent :: insertar()){
-			$consultaInsertar="INSERT INTO responsable(rnumeroempleado, rnumerolicencia, rdocumento) 
+			$consultaInsertar="INSERT INTO responsable(rnumeroempleado, rnumerolicencia, nrodoc) 
             VALUES ('".$this->getNroEmpleado()."','".$this->getNroLicencia()."','".$this->getNroDoc()."')";
 
 			if($base->Iniciar()){
@@ -68,7 +68,7 @@ class ResponsableV extends Persona{
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaResp)){
 				if($row2=$base->Registro()){					
-				    parent::Buscar($row2['rdocumento']);			
+				    parent::Buscar($row2['nrodoc']);			
 				    $this->setNroEmpleado($row2['rnumeroempleado']);
 					$this->setNroLicencia($row2['rnumerolicencia']);
 
@@ -93,7 +93,7 @@ class ResponsableV extends Persona{
 		if(parent::modificar()){
 			$consultaModifica="'UPDATE responsable SET apellido ='".$this->getApellido()."', nombre ='".$this->getNombre()."'
                            , telefono ='".$this->getTelefono()."', rnumerolicencia ='".$this->getNroLicencia()."'
-                           , rdocumento ='".$this->getNroDoc()."' WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
+                           , nrodoc ='".$this->getNroDoc()."' WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
 			
 			if($base->Iniciar()){
 				if($base->Ejecutar($consultaModifica)){
@@ -145,7 +145,7 @@ class ResponsableV extends Persona{
 				$arregloResponsables = [];
 				while ($row = $base->Registro()) {
 					$responsable = new ResponsableV();
-					$responsable->Buscar($row['rdocumento']); 
+					$responsable->Buscar($row['nrodoc']); 
 	
 					array_push($arregloResponsables, $responsable);
 				}

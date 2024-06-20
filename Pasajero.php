@@ -50,7 +50,7 @@ class Pasajero extends Persona {
 	}
 	public function Buscar($dni){
 		$base=new BaseDatos();
-		$consultaPas="Select * from pasajero where pdocumento=".$dni;
+		$consultaPas="Select * from pasajero where nrodoc=".$dni;
 		$resp= false;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaPas)){
@@ -91,7 +91,7 @@ class Pasajero extends Persona {
 				while($row2=$base->Registro()){
 					$pasajero=new Pasajero();
 
-					$pasajero->Buscar($row2['pdocumento']);
+					$pasajero->Buscar($row2['nrodoc']);
 					array_push($arreglo,$pasajero);
 	
 	

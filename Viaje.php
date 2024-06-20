@@ -196,7 +196,7 @@ class Viaje{
                     $consultaPasajeros = "SELECT * FROM pasajero WHERE idviaje = " . $idViaje;
                     if ($base->Ejecutar($consultaPasajeros)) {
                         while ($rowPasajero = $base->Registro()) {
-                            $dniPasajero = $rowPasajero['pdocumento']; 
+                            $dniPasajero = $rowPasajero['nrodoc']; 
                             $pasajero = new Pasajero(); 
                             if ($pasajero->Buscar($dniPasajero)) {
                                 $this->arrayPasajeros[] = $pasajero;
@@ -223,10 +223,14 @@ class Viaje{
         $resp = false;
         $destino = $this->getDestino();
         $max_pasajeros = $this->getCantMaxPasajeros();
+        $emp = new Empresa();
+        $idemp = $emp->getIdEmpresa();
+        $emplead = new ResponsableV();
+        $nroEmp = $emplead->getNroEmpleado();
         $importe = $this->getImporte();
 
-        $consulta_insertar = "INSERT INTO viaje(vdestino, vcantmaxpasajeros, vimporte)
-		VALUES ('{$destino}', '{$max_pasajeros}', '{$importe}')";
+        $consulta_insertar = "INSERT INTO viaje(vdestino, vcantmaxpasajeros, idempresa, rnumeroempleado, vimporte)
+		VALUES ('{$destino}', '{$max_pasajeros}', '{$idemp}', '{$nroEmp}', '{$importe}')";
 
         if ($base->Iniciar()) {
             $idViaje = $base->devuelveIDInsercion($consulta_insertar);
@@ -289,28 +293,15 @@ class Viaje{
         $hayPasajeroRepetido = $pasajeros->Buscar($nuevoDoc);
         
         if(!$hayPasajeroRepetido){
-            $pasajeros->setNroPFrecuente($nuevaFrec);
-            $pasajeros->setObjViaje($idViaje);
-            $pasajeros->cargar($nuevoDoc, $nuevoNombre, $nuevaApellido, $nuevoTelefono);
+            $datosPasaj = ['nombre' => $nuevoNombre, 'apellido' => $nuevaApellido, 'nrodoc' => $nuevoDoc, 'telefono' => $nuevoTelefono, 'nropfrecuente' => $nuevaFrec, 'idviaje' => $idViaje];
+            // $pasajeros->setNroPFrecuente($nuevaFrec);
+            // $pasajeros->setObjViaje($idViaje);
+            $pasajeros->cargar($datosPasaj);
             $seAgrego = true; 
         }
 
         return $seAgrego ;
     }
 
-    public function agregarResponsable($nombre, $apellido, $nroDoc, $telefono, $numEmpleado){
-        $seAgrego = false;
 
-        $responsable = new ResponsableV();
-        $hayRepetido = $responsable->Buscar($nroDoc);
-        
-        if(!$hayRepetido){
-            $responsable->setTelefono($telefono);
-            $responsable->setNroLicencia($numEmpleado);
-            $responsable->cargar($nroDoc,$nombre, $apellido, $telefono);
-            $seAgrego = true; 
-        }
-
-        return $seAgrego ;
-    }
 }

@@ -109,7 +109,7 @@ function ingresarNuevoViaje(){
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar(null, $destino, $cantMaxPasajeros, $idEmp, $nroResp, null, $importe);
+    $viaje->cargar(null, $destino, $cantMaxPasajeros, $idEmp, $nroResp, [], $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
@@ -265,15 +265,15 @@ function insertarResponsable(){
             // $nroDoc = trim(fgets(STDIN));
             echo "Ingrese el teléfono del responsable: ";
             $telefono = trim(fgets(STDIN));
-            // echo "Ingrese Nro de empleado:";
-            // $numEmpleado = trim(fgets(STDIN));
+            echo "Ingrese Nro de empleado:";
+            $numEmpleado = trim(fgets(STDIN));
             echo "Ingrese Nro de Licencia: ";
             $numLicencia = trim(fgets(STDIN));
 
             $responsable = new ResponsableV();
             $responsable->setNroEmpleado(null);
             $responsable->setNroLicencia($numLicencia);
-            $datosResp = ['nombre' => $nombre, 'apellido' => $apellido, 'nrodoc' => $nroDoc, 'telefono' => $telefono, 'rnumeroempleado' => null, 'rnumerolicencia' => $numLicencia];
+            $datosResp = ['nombre' => $nombre, 'apellido' => $apellido, 'nrodoc' => $nroDoc, 'telefono' => $telefono, 'rnumeroempleado' => $numEmpleado, 'rnumerolicencia' => $numLicencia];
             $responsable->cargar($datosResp);
             $bandera = $responsable->insertar();
 
