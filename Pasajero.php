@@ -83,7 +83,7 @@ class Pasajero extends Persona {
 		if ($condicion!=""){
 		    $consultaPasajeros=$consultaPasajeros.' where '.$condicion;
 		}
-		$consultaPasajeros.=" order by apellido ";
+		$consultaPasajeros.=" order by nrodoc ";
 		//echo $consultaPasajeros;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaPasajeros)){				

@@ -45,7 +45,7 @@ class ResponsableV extends Persona{
 		$resp= false;
 
 		if($resp = parent :: insertar()){
-			$consultaInsertar="INSERT INTO responsable(rnumerolicencia, rdocumento) 
+			$consultaInsertar="INSERT INTO responsable(rnumerolicencia, nrodoc) 
             VALUES ('".$this->getNroLicencia()."','". parent::getNroDoc()."')";
 
 			if($base->Iniciar()){
@@ -65,7 +65,7 @@ class ResponsableV extends Persona{
 
     public function Buscar($nroDoc){
 		$base=new BaseDatos();
-		$consultaResp="Select * from resposable where rnumeroempleado=".$nroDoc;
+		$consultaResp="Select * from responsable where rnumeroempleado=".$nroDoc;
 		$resp= false;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaResp)){
