@@ -19,29 +19,44 @@ $objResponsable = New ResponsableV();
 
 
 function opciones(){ 
-    echo "+--------------------------------------------------+\n";
+        echo "+--------------------------------------------------+\n";
         echo "MENU DE OPCIONES PRINCIPAL". "\n";
         echo "1: Ingresar Nuevo Viaje". "\n";
         echo "2: Modificar un Viaje existente". "\n";
         echo "3: Ingresar Pasajeros". "\n";
-        echo "4: Eliminar datos de viaje". "\n";
+        echo "4: Opciones para eliminar". "\n";
         echo "5: Mostrar datos del viaje". "\n";
         echo "6: Salir". "\n";
-        echo "Elija una opcion: ";
+        echo "Elija una opcion: \n";
+        echo "+--------------------------------------------------+\n";
         $opcion = trim(fgets(STDIN));
-    echo "+--------------------------------------------------+\n";
+    
         
     return $opcion;
 }
 function opcionesModViaje(){ 
-        echo "LAS OPCIONES DE VIAJE.". "\n";
+        echo "+====================================+\n";
+        echo "OPCIONES PARA MODIFICAR.". "\n";
         echo "1.Datos del viaje". "\n";
         echo "2.Responsable del viaje". "\n";
         echo "3.Datos de Pasajeros". "\n";
         echo "Eliga una opcion: ";
+        echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
-    echo "------------------------------------\n";
-            
+        
+    return $opcion;
+}
+function opcionesEliminar(){
+        echo "+====================================+\n";
+        echo "OPCIONES PARA ELIMINAR.". "\n";
+        echo "1. Eliminar viaje". "\n";
+        echo "2. Eliminar responsable.". "\n";
+        echo "3. Eliminar pasajero.". "\n";
+        echo "4. Salir";
+        echo "Eliga una opcion: \n";
+        echo "+====================================+\n";
+        $opcion = trim(fgets(STDIN));
+    
     return $opcion;
 }
 
@@ -53,7 +68,6 @@ do{
             break;
         case 2:
             $valor = seleccionarIdViaje($objViaje);
-            echo "ELIJA PARA MODIFICAR ";
             $opviaje = opcionesModViaje();
             switch ($opviaje) {
                 case 1:
@@ -72,26 +86,31 @@ do{
             insertarPasajeros($valor, $objViaje);
             break;
         case 4:
-            $valor = seleccionarIdViaje($objViaje);
-            echo "ELIJA PARA ELIMINAR";
-            $opviaje = opcionesModViaje();
-            switch ($opviaje) {
-                case 1:
-                    eliminarDatosViaje();
-                    break;
-                case 2:
-                    eliminarDatosResponsable();
-                    break;
-                case 3:
-                    eliminarDatosPasajero();
-                    break;
-            }
+            $opcionesEliminar = opcionesEliminar();
+            do{
+                switch ($opcionesEliminar){
+                    case 1:
+                        eliminarDatosViaje();
+                        break;
+                    case 2:
+                        eliminarDatosResponsable();
+                        break;
+                    case 3:
+                        eliminarDatosPasajero();
+                        break;
+                    case 4:
+                        echo "SALIENDO AL MENU PRINCIPAL";
+                        break;    
+                }
+                break;
+            }while ($opcion != 0);
+
             break;
         case 5:
             mostrarDatosViaje($objViaje);
             break;
         case 6:
-            echo "----------------- FIN DEL PROGRAMA -----------------" ;
+            echo "*<<<<<<<<<<<<<<<< FIN DEL PROGRAMA >>>>>>>>>>>>>>>>*" ;
             break;
     }
 
