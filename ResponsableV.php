@@ -40,20 +40,22 @@ class ResponsableV extends Persona{
     }
 
 
-    public function insertar(){
-        $base=new BaseDatos();
+    public function insertar(){      
+    	$base=new BaseDatos();
 		$resp= false;
 
 		if($resp = parent :: insertar()){
-			$consultaInsertar="INSERT INTO responsable(rnumeroempleado, rnumerolicencia, nrodoc) 
-            VALUES ('".$this->getNroEmpleado()."','".$this->getNroLicencia()."','".$this->getNroDoc()."')";
+			$consultaInsertar="INSERT INTO responsable(rnumerolicencia, rdocumento) 
+            VALUES ('".$this->getNroLicencia()."','". parent::getNroDoc()."')";
 
 			if($base->Iniciar()){
-				if($base->Ejecutar($consultaInsertar)){
-					$resp=  true;
-				}else {
-					$this->setmensajeoperacion($base->getError());	
-				}
+				$nroEmpleado = $base->devuelveIDInsercion($consultaInsertar);
+            	if ($nroEmpleado) {
+                	$this->setNroEmpleado($nroEmpleado);
+                	$resp = true;
+            	} else {
+                	$this->setMensajeOperacion($base->getError());
+            	}
 			} else {
 				$this->setmensajeoperacion($base->getError());
 			}
@@ -61,9 +63,9 @@ class ResponsableV extends Persona{
 		return $resp;
 	}
 
-    public function Buscar($nroempleado){
+    public function Buscar($nroDoc){
 		$base=new BaseDatos();
-		$consultaResp="Select * from resposable where rnumeroempleado=".$nroempleado;
+		$consultaResp="Select * from resposable where rnumeroempleado=".$nroDoc;
 		$resp= false;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaResp)){
@@ -113,7 +115,7 @@ class ResponsableV extends Persona{
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
+				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".parent::getNroDoc()."";
 				if($base->Ejecutar($consultaBorra)){
 				    if (parent::eliminar($nroDoc)) {
 						$resp = true;
@@ -138,7 +140,7 @@ class ResponsableV extends Persona{
 			$consultaResponsables .= ' WHERE ' . $condicion;
 		}
 	
-		$consultaResponsables .= " ORDER BY apellido";
+		$consultaResponsables .= " ORDER BY nroempleado";
 	
 		if ($base->Iniciar()) {
 			if ($base->Ejecutar($consultaResponsables)) {

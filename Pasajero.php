@@ -114,14 +114,12 @@ class Pasajero extends Persona {
         $resp = parent :: insertar();
         	$base=new BaseDatos();
 		    $resp= false;
-		    $docPasajero = parent::getNroDoc();
-			$viaje = new Viaje();
 
 			if(parent :: insertar()){
-				$idReferenciaViaje = $viaje->getIdViaje();
+				$idReferenciaViaje = $this->getObjViaje()->getIdViaje();
 
 				$consultaInsertar="INSERT INTO pasajero(nrodoc, nropfrecuente, idviaje) 
-                VALUES ('".$docPasajero."','".$this->getNroPFrecuente()."','" . $idReferenciaViaje . "')";
+                VALUES ('".parent::getNroDoc()."','".$this->getNroPFrecuente()."','" . $idReferenciaViaje . "')";
 				if($base->Iniciar()){
 
 					if($base->Ejecutar($consultaInsertar)){

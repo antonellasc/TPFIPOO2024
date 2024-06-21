@@ -104,48 +104,35 @@ class Empresa{
 			if($base->Ejecutar($consultaEmpresa)){				
 				$arreglo= array();
 				while($row2=$base->Registro()){
-					
-					$id=$row2['idempresa'];
-					$nombre=$row2['enombre'];
-					$direccion=$row2['edireccion'];
-					
-				
 					$empr = new Empresa();
-					$empr->cargar($id,$nombre,$direccion);
-					array_push($arreglo,$empr);
-	
+                	$empr->cargar($row2['idempresa'], $row2['enombre'], $row2['edireccion']);
+                	array_push($arreglo, $empr);
 				}
-				
-			
 		 	}	else {
 		 			$this->setmensajeoperacion($base->getError());
 		 		
 			}
-		 }	else {
+		}	else {
 		 		$this->setmensajeoperacion($base->getError());
 		 	
-		 }	
-		 return $arreglo;
+		}	
+		return $arreglo;
 	}
 
     public function insertar(){
         	$base=new BaseDatos();
 		    $resp= false;
-		    $consultaInsertar="INSERT INTO empresa(idempresa, enombre, edireccion) 
-                VALUES ('".$this->getIdEmpresa()."','".$this->getNombreEmpresa()."','".$this->getDomicilioEmpresa()."')";
+		    $consultaInsertar="INSERT INTO empresa(enombre, edireccion) 
+                VALUES ('".$this->getNombreEmpresa()."','".$this->getDomicilioEmpresa()."')";
 		
 		    if($base->Iniciar()){
-
-			if($base->Ejecutar($consultaInsertar)){
 				if($idEmpresa = $base->devuelveIDInsercion($consultaInsertar)){
 					$this->setIdEmpresa($idEmpresa);
 					$resp=  true;
 				}else {
 					$this->setmensajeoperacion($base->getError());
 				}	
-			}
-        
-		        } else {
+			} else {
 			    	$this->setmensajeoperacion($base->getError());	
     		}
 	    	return $resp;
@@ -179,8 +166,7 @@ class Empresa{
 				if($base->Ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{
-						$this->setmensajeoperacion($base->getError());
-					
+					$this->setmensajeoperacion($base->getError());
 				}
 		}else{
 				$this->setmensajeoperacion($base->getError());
