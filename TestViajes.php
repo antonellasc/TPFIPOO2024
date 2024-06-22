@@ -74,7 +74,9 @@ do{
                     modificarDatosViaje($valor);
                     break;
                 case 2:
-                    modificarDatosResponsable($valor);
+                    echo "Ingrese el número de empleado del responsable a modificar: \n";
+                    $nroEmpleado = trim(fgets(STDIN));
+                    modificarDatosResponsable($nroEmpleado);
                     break;
                 case 3:
                     modificarDatosPasajero($valor, $objPasajero);
@@ -194,7 +196,35 @@ function modificarDatosViaje($codigoViaje){
 }
 
 //modificar datos del responsable del viaje (OPCION 2 <<OPCION 2>>)
-function modificarDatosResponsable(){
+function modificarDatosResponsable($nroResponsable){
+    $responsable = new ResponsableV();
+
+    echo "--------------------------------------------------------\n";
+        echo "Nuevo nombre: \n";
+        $nuevoNomResp = trim(fgets(STDIN));
+        echo "Nuevo apellido: \n";
+        $nuevoApeResp = trim(fgets(STDIN));
+        echo "Nuevo nro de documento: \n";
+        $nuevoDocResp = trim(fgets(STDIN));
+        echo "Nuevo nro de teléfono: \n";
+        $nuevoTelResp = trim(fgets(STDIN));
+        echo "Nuevo nro de licencia: \n";
+        $nuevaLicResp = trim(fgets(STDIN));
+
+        $responsable->setNombre($nuevoNomResp);
+        $responsable->setApellido($nuevoApeResp);
+        $responsable->setNroDoc($nuevoDocResp);
+        $responsable->setTelefono($nuevoTelResp);
+        $responsable->setNroLicencia($nuevaLicResp);
+
+        $exito = $responsable->modificar();
+        if ($exito) {
+            echo "La modificacion se realizo con exito !\n";
+        } else {
+            echo "(!!!) No es posible realizar la modificacion\n";
+        }
+
+
 
 }
 
@@ -245,7 +275,7 @@ function insertarPasajeros($idViaje, $objViaje){
     $condicionPasajero = "idviaje = $idViaje";
     $totalPasajeros = $pasajero->listar($condicionPasajero);
 
-    if ($totalPasajeros === null || $cantMaxPasajeros > count($totalPasajeros)) {
+    if (count($totalPasajeros) == 0 || $cantMaxPasajeros > count($totalPasajeros)) {
         do{
             echo "Ingrese el número de documento del pasajero: ";
             $nroDoc = trim(fgets(STDIN));
@@ -262,7 +292,7 @@ function insertarPasajeros($idViaje, $objViaje){
         $apellido = trim(fgets(STDIN));
         echo "Telefono: ";
         $telefono = trim(fgets(STDIN));
-        echo "Nro de frecuencia: ";
+        echo "Nro pasajero frecuente: ";
         $pasFrec = trim(fgets(STDIN));
 
         $datosPas= [
@@ -271,7 +301,7 @@ function insertarPasajeros($idViaje, $objViaje){
             'nrodoc' => $nroDoc, 
             'telefono' => $telefono, 
             'nropfrecuente' => $pasFrec, 
-            'idviaje' => $objViaje,
+            'idviaje' => $idViaje,
         ];
 
         $pasajero->cargar($datosPas);
@@ -417,42 +447,20 @@ function eliminarDatosResponsable(){
     }
 
 
-// function mostrarDatosViaje($objEmpresa){
-//     echo "Ingrese el id del viaje: ";
-//     $idViaje = trim(fgets(STDIN));
-//     $viajeEncontrado = null;
-//     $colViajes = $objEmpresa->getArregloViajes();
-
-//     foreach ($colViajes as $viaje){
-//         if ($viaje->getIdViaje() == $idViaje){
-//                 $viajeEncontrado = $viaje;
-//                 break;
-//             } 
-//         if ($viajeEncontrado == null){
-//             echo  "No se encontró el viaje con el ID especificado.\n";
-//         }
-//         else{
-//             echo "VIAJE ENCONTRADO: \n";
-
-//             echo $viajeEncontrado;
-//         }
-//     }
-// }
-
 function mostrarDatosViaje($objViaje){
     $viajeInfo = null;
-    $condicion = "' idviaje = ";
+    $condicion = " idviaje = ";
 	echo "Ingrese el id del viaje que desea ver: \n";
 	$id = trim(fgets(STDIN));
 	if(!is_numeric($id) || $id == ""){
 		echo "Por favor, ingrese un valor numérico. \n";
 	}else{
-        $condicion = $condicion . $id . " '";
-		$viajeInfo = $objViaje->Listar($condicion);
+        $condicion = $condicion . $id;
+		$viajeInfo = $objViaje->listar($condicion);
     }
 
 		if($viajeInfo != null){
-          $retornaViaje = $objViaje->mostrarColeccion($viajeInfo); 
+          $retornaViaje = $objViaje->mostrarCol($viajeInfo); 
 		  echo $retornaViaje;  
 		}else{
           echo "No existe un viaje con ese id. \n";  

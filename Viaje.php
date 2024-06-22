@@ -88,12 +88,13 @@ class Viaje{
         "Destino: " . $this->getDestino() . "\n" . 
         "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
         "Responsable del viaje: \n" . $this->getObjResponsable() . 
-        "Id empresa de viajes: " . $this->getObjEmpresa() . 
-        "Pasajeros: \n" . $this->mostrarColeccion() . "\n" . 
+        "Empresa de viajes: \n" . $this->getObjEmpresa() . "\n" .  
+        "Pasajeros: \n" . $this->mostrarColeccionPasajeros() . "\n" . 
         "Importe del viaje: $" . $this->getImporte() . "\n";
     }
 
-    public function mostrarColeccion(){
+    public function mostrarColeccionPasajeros(){
+        // pasa el array de pasajeros a string para que pueda ser mostrado por consola
         $mostrar = "";
         $pasajeros= $this->getColPasajeros();
         foreach ($pasajeros as $pasajero) {
@@ -101,6 +102,16 @@ class Viaje{
             $mostrar.= "----------------------------------------------------------------------\n";
         }
         return $mostrar;
+    }
+
+    public function mostrarCol($unaColeccion){
+        // función generica para pasar un array a string
+        $mostrarC = "";
+        foreach ($unaColeccion as $elemento) {
+            $mostrarC .= $elemento . "\n";
+            $mostrarC.= "----------------------------------------------------------------------\n";
+        }
+        return $mostrarC;
     }
 
     public function cargar($idViaje, $vDestino, $cantMaxPasajeros,$obj_Responsable, $obj_Empresa, $vImporte)
@@ -120,53 +131,81 @@ class Viaje{
         $this->mensajeoperacion= $mensajeoperacion;
     }
 
-    public function Listar($condicion = "")
+    // public function Listar($condicion)
+    // {
+    //     $arregloViajes = [];
+    //     $base = new BaseDatos();
+    //     $consultaViajes = "SELECT * FROM viaje ";
+
+    //     if ($condicion != "") {
+    //         $consultaViajes = $consultaViajes . ' WHERE ' . $condicion;
+    //     }
+
+    //     $consultaViajes .= " ORDER BY idviaje";
+
+    //     if ($base->Iniciar()) {
+    //         if ($base->Ejecutar($consultaViajes)) {
+    //             $arregloViajes = [];
+    //             while ($row = $base->Registro()) {
+    //                 $viaje = new Viaje();
+
+    //                 $idEmpresa = $row['idempresa']; 
+    //                 $empresa = new Empresa();
+    //                 if ($empresa->buscar($idEmpresa)) {
+    //                     $this->setObjEmpresa($empresa);
+    //                 }
+
+    //                 $idResponsable = $row['rnumeroempleado']; 
+    //                 $responsable = new ResponsableV();
+    //                 if ($responsable->Buscar($idResponsable)) {
+    //                     $this->setObjResponsable($responsable);
+    //                 }
+
+    //                 $viaje->cargar($row['idviaje'],$row['vdestino'],$row['vcantmaxpasajeros'],$idResponsable, $idEmpresa,$row['vimporte']);
+                    
+    //                 $pasajeros = new Pasajero();
+    //                 $arregloPasajeros = $pasajeros->listar("idviaje =". $row['idviaje']);
+    //                 $viaje->setColPasajeros($arregloPasajeros);
+
+    //                 array_push($arregloViajes, $viaje);
+    //             }
+    //         } else {
+    //             $this->setmensajeoperacion($base->getError());
+    //         }
+    //     } else {
+
+    //         $this->setmensajeoperacion($base->getError());
+    //     }
+
+    //     return $arregloViajes;
+    // }
+
+    public function listar($condicion)
+    //prueba listar, funciona !! 
     {
-        $arregloViajes = [];
+        $arregloViaje = [];
         $base = new BaseDatos();
         $consultaViajes = "SELECT * FROM viaje ";
-
         if ($condicion != "") {
-            $consultaViajes .= ' WHERE ' . $condicion;
+            $consultaViajes = $consultaViajes . ' WHERE ' . $condicion;
         }
-
         $consultaViajes .= " ORDER BY idviaje";
-
         if ($base->Iniciar()) {
             if ($base->Ejecutar($consultaViajes)) {
-                $arregloViajes = [];
+                $arregloViaje = [];
                 while ($row = $base->Registro()) {
+                    $id_viaje = $row['idviaje'];
                     $viaje = new Viaje();
-
-                    $idEmpresa = $row['idempresa']; 
-                    $empresa = new Empresa();
-                    if ($empresa->buscar($idEmpresa)) {
-                        $this->setObjEmpresa($empresa);
-                    }
-
-                    $idResponsable = $row['rnumeroempleado']; 
-                    $responsable = new ResponsableV();
-                    if ($responsable->Buscar($idResponsable)) {
-                        $this->setObjResponsable($responsable);
-                    }
-
-                    $viaje->cargar($row['idviaje'],$row['vdestino'],$row['vcantmaxpasajeros'],$responsable, $empresa,$row['vimporte']);
-                    
-                    $pasajeros = new Pasajero();
-                    $arregloPasajeros = $pasajeros->listar("idviaje =". $row['idviaje']);
-                    $viaje->setColPasajeros($arregloPasajeros);
-
-                    array_push($arregloViajes, $viaje);
+                    $viaje->Buscar($id_viaje);
+                    array_push($arregloViaje, $viaje);
                 }
             } else {
                 $this->setmensajeoperacion($base->getError());
             }
         } else {
-
             $this->setmensajeoperacion($base->getError());
         }
-
-        return $arregloViajes;
+        return $arregloViaje;
     }
 
     public function Buscar($idViaje) {

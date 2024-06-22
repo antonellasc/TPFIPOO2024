@@ -45,7 +45,7 @@ class Empresa{
     }
 
     public function __toString(){
-        return "Id empresa: " . $this->getIdEmpresa() . "\n" . 
+        return "Id: " . $this->getIdEmpresa() . "\n" . 
         "Nombre empresa: " . $this->getNombreEmpresa() . "\n" . 
         "Domicilio: " . $this->getDomicilioEmpresa() . "\n";
     }
@@ -76,7 +76,6 @@ class Empresa{
 				    $this->setIdEmpresa($id);
 					$this->setNombreEmpresa($row2['enombre']);
 					$this->setDomicilioEmpresa($row2['edireccion']);
-					// $this->setTelefono($row2['telefono']);
 					$resp= true;
 				}				
 			

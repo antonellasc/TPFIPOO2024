@@ -77,7 +77,7 @@ class Pasajero extends Persona {
 
 
 	public function listar($condicion=""){
-	    $arreglo = null;
+	    $arreglo = [];
 		$base=new BaseDatos();
 		$consultaPasajeros="Select * from pasajero ";
 		if ($condicion!=""){
@@ -89,9 +89,10 @@ class Pasajero extends Persona {
 			if($base->Ejecutar($consultaPasajeros)){				
 				$arreglo= array();
 				while($row2=$base->Registro()){
+					$nrodoc = $row2['nrodoc'];
 					$pasajero=new Pasajero();
 
-					$pasajero->Buscar($row2['nrodoc']);
+					$pasajero->Buscar($nrodoc);
 					array_push($arreglo,$pasajero);
 	
 	
@@ -111,11 +112,11 @@ class Pasajero extends Persona {
 
 
     public function insertar(){
-        $resp = parent :: insertar();
+        $respP = parent :: insertar();
         	$base=new BaseDatos();
 		    $resp= false;
 
-			if(parent :: insertar()){
+			if($respP){
 				$idReferenciaViaje = $this->getObjViaje()->getIdViaje();
 
 				$consultaInsertar="INSERT INTO pasajero(nrodoc, nropfrecuente, idviaje) 
