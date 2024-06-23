@@ -368,7 +368,7 @@ function insertarResponsable(){
 //elimina datos de un viaje (OPCION 4)
 function eliminarDatosViaje(){
     $viaje = new Viaje();
-    $colViajes = $viaje->listar();
+    $colViajes = $viaje->listar("");
     echo "Listado de viajes: \n";
     foreach($colViajes as $unViaje){
         echo "\n". $unViaje ."\n";
