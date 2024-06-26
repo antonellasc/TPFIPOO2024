@@ -200,49 +200,63 @@ function modificarDatosViaje($codigoViaje){
 }
 
 //modificar datos del responsable del viaje (OPCION 2 <<OPCION 2>>)
-function modificarDatosResponsable($idViaje, $viaje){
+
+function modificarDatosResponsable($idViaje, $viaje) {
     if ($viaje->Buscar($idViaje)) {
         $responsable = $viaje->getObjResponsable();
-        $numeroEmpleado = $responsable->getNroEmpleado();
-    }
-    echo $responsable->__toString();
 
-    echo "Ingrese Numero de documento del Responsable a modificar:";
-    $nroDocConfig = trim(fgets(STDIN));
+        echo "Responsable actual:\n";
+        if($viaje->getObjResponsable() == null){
+            $mensaje = "No hay viaje cargado, cargue uno";
+            return $mensaje;
+        }else{
+            echo $responsable->__toString();
+        }
+        echo "Ingrese Numero de documento del Responsable a modificar:";
+        $nroDocConfig = trim(fgets(STDIN));
 
-    echo "--------------------------------------------------------\n";
+        $persona = new Persona();
+        $persona->Buscar($nroDocConfig);
+
+        echo "--------------------------------------------------------\n";
         echo "Nuevo nombre: \n";
         $nuevoNomResp = trim(fgets(STDIN));
         echo "Nuevo apellido: \n";
         $nuevoApeResp = trim(fgets(STDIN));
-        echo "Nuevo nro de documento: \n";
-        $nuevoDocResp = trim(fgets(STDIN));
         echo "Nuevo nro de teléfono: \n";
-        $nuevoTelResp = trim(fgets(STDIN));
-        echo "Nuevo nro de licencia: \n";
-        $nuevaLicResp = trim(fgets(STDIN));
+        $nuevoTelResp = trim(fgets(STDIN)); 
 
-        $datosResp = [
-            'nombre' => $nuevoNomResp, 
-            'apellido' => $nuevoApeResp, 
-            'nrodoc' => $nuevoDocResp, 
-            'telefono' => $nuevoTelResp, 
-            'rnumeroempleado' => $numeroEmpleado, 
-            'rnumerolicencia' => $nuevaLicResp
+        // Datos para actualizar en Persona
+        $datosPersona = [
+            'nombre' => $nuevoNomResp,
+            'apellido' => $nuevoApeResp,
+            'nrodoc' => $nroDocConfig, 
+            'telefono' => $nuevoTelResp,
         ];
 
-        $nuevoResponsable = new ResponsableV();
-        $nuevoResponsable->cargar($datosResp);
-        $exito = $nuevoResponsable->modificar();
-        if ($exito) {
-            echo "La modificacion se realizo con exito !\n";
+        // Cargar y modificar los datos de la persona
+        $persona->cargar($datosPersona);
+        $exitoPersona = $persona->modificar();
+
+        if ($exitoPersona) {
+            $nuevaLicResp = trim(readline("Nuevo nro de licencia: "));
+            $responsable->setNroLicencia($nuevaLicResp);
+
+            $exitoResponsable = $responsable->modificar();
+
+            if ($exitoResponsable) {
+                echo "La modificación del responsable se realizó con éxito !\n";
+            } else {
+                echo "(!!!) No es posible realizar la modificación del responsable\n";
+            }
         } else {
-            echo "(!!!) No es posible realizar la modificacion\n";
+            echo "(!!!) No es posible realizar la modificación de la persona\n";
         }
-
-
-
+    } else {
+        echo "No se encontró el viaje con ID: $idViaje\n";
+    }
 }
+
 
 //modificar datos de un pasajero (OPCION 3 <<OPCION 2>>)
 function modificarDatosPasajero($idViaje, $objPasajero){
