@@ -168,19 +168,18 @@ class Pasajero extends Persona {
 	}
 
 
-    public function eliminar($nroDoc){
+    public function eliminar(){
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="DELETE FROM pasajero WHERE nrodoc ='".$this->getNroDoc()."'";
-				if($base->Ejecutar($consultaBorra)){
-				    if (parent::eliminar($nroDoc)) {
-						$resp = true;
-					}
-				}else{
-						$this->setmensajeoperacion($base->getError());
-					
+			$consultaBorra="DELETE FROM pasajero WHERE nrodoc ='".$this->getNroDoc()."'";
+			if($base->Ejecutar($consultaBorra)){
+			    if (parent::eliminar()) {
+					$resp = true;
 				}
+			}else{
+				$this->setmensajeoperacion($base->getError());
+			}
 		}else{
 				$this->setmensajeoperacion($base->getError());
 			

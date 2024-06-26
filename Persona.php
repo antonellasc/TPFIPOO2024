@@ -180,11 +180,11 @@ class Persona {
 		return $resp;
 	}
 
-    public function eliminar($nroDoc){
+    public function eliminar(){
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="'DELETE FROM persona WHERE nrodoc ='".$this->getNroDoc()."";
+				$consultaBorra="DELETE FROM persona WHERE nrodoc =".$this->getNroDoc();
 				if($base->Ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{

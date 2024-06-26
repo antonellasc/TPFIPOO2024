@@ -111,13 +111,13 @@ class ResponsableV extends Persona{
 	}
 
 
-    public function eliminar($nroDoc){
+    public function eliminar(){
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
 				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".parent::getNroDoc()."'";
 				if($base->Ejecutar($consultaBorra)){
-				    if (parent::eliminar($nroDoc)) {
+				    if (parent::eliminar()) {
 						$resp = true;
 					}
 				}else{
