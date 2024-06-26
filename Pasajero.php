@@ -1,27 +1,37 @@
 <?php
 
 class Pasajero extends Persona {
-    private $nroPasajeroFrecuente;
+	private $nroTicket;
+	private $nroAsiento;
 	private $objViaje;
 	private $mensajeoperacion;
 
     public function __construct(){
         parent :: __construct();
-        $this->nroPasajeroFrecuente = "";
+		$this->nroTicket = "";
+		$this->nroAsiento = "";
         $this->objViaje = null;
     }
 
-    public function getNroPFrecuente(){
-        return $this->nroPasajeroFrecuente;
+	public function getTicket(){
+        return $this->nroTicket;
     }
+
+	public function getAsiento(){
+		return $this->nroAsiento;
+	}
 
     public function getObjViaje(){
         return $this->objViaje;
     }
 
-    public function setNroPFrecuente($nroPFrecuente){
-        $this->nroPasajeroFrecuente = $nroPFrecuente;
+	public function setTicket($nroTicket){
+        $this->nroTicket = $nroTicket;
     }
+
+	public function setAsiento($nroAsiento){
+		$this->nroAsiento=$nroAsiento;
+	}
 
     public function setObjViaje($obj_Viaje){
         $this->objViaje = $obj_Viaje;
@@ -29,14 +39,16 @@ class Pasajero extends Persona {
 
     public function __toString(){
         return parent :: __toString() . 
-        "Nro pasajero frecuente: " . $this->getNroPFrecuente() . "\n" . 
+		"Nro de ticket:" . $this->getTicket() . "\n" . 
+		"Nro de Asiento:". $this->getAsiento(). "\n". 
         "Datos del viaje: \n" . $this->getObjViaje() ;
     }
 
     // 
     public function cargar($datosPasajero){
         parent :: cargar($datosPasajero);
-		$this->setNroPFrecuente($datosPasajero['nropfrecuente']);
+		$this->setTicket($datosPasajero['nroticket']);
+		$this->setAsiento($datosPasajero['nroasiento']);
 		$this->setObjViaje($datosPasajero['idviaje']);
     }
 
@@ -58,7 +70,8 @@ class Pasajero extends Persona {
 				    parent::Buscar($dni);
 
 				    $this->setNroDoc($dni);
-					$this->setNroPFrecuente($row2['nropfrecuente']);
+					$this->setTicket($row2['nroticket']);
+					$this->setAsiento($row2['nroasiento']);
 					$this->setObjViaje($row2['idviaje']);
 					
 					$resp= true;
@@ -83,7 +96,7 @@ class Pasajero extends Persona {
 		if ($condicion!=""){
 		    $consultaPasajeros=$consultaPasajeros.' where '.$condicion;
 		}
-		$consultaPasajeros.=" order by nrodoc ";
+		$consultaPasajeros.=" order by nroticket";
 		//echo $consultaPasajeros;
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaPasajeros)){				
@@ -94,10 +107,7 @@ class Pasajero extends Persona {
 
 					$pasajero->Buscar($nrodoc);
 					array_push($arreglo,$pasajero);
-	
-	
 				}
-				
 			
 		 	}	else {
 		 			$this->setmensajeoperacion($base->getError());
@@ -112,22 +122,23 @@ class Pasajero extends Persona {
 
 
     public function insertar(){
-        $respP = parent :: insertar();
         	$base=new BaseDatos();
 		    $resp= false;
 
-			if($respP){
-				$idReferenciaViaje = $this->getObjViaje()->getIdViaje();
+			if(parent :: insertar()){
+				$idReferenciaViaje = $this->getObjViaje();
 
-				$consultaInsertar="INSERT INTO pasajero(nrodoc, nropfrecuente, idviaje) 
-                VALUES ('".parent::getNroDoc()."','".$this->getNroPFrecuente()."','" . $idReferenciaViaje . "')";
+				$consultaInsertar="INSERT INTO pasajero( nroasiento, idviaje,nrodoc) 
+                VALUES ('".$this->getAsiento()."','" . $idReferenciaViaje . "','". parent::getNroDoc()."')";
+
 				if($base->Iniciar()){
-
-					if($base->Ejecutar($consultaInsertar)){
-						$resp=  true;
-					}	else {
-							$this->setmensajeoperacion($base->getError());
-					}
+					$nroTicket = $base->devuelveIDInsercion($consultaInsertar);
+            		if ($nroTicket) {
+                		$this->setTicket($nroTicket);
+                		$resp = true;
+            		} else {
+                		$this->setMensajeOperacion($base->getError());
+            		}
 
 				} else {
 						$this->setmensajeoperacion($base->getError());	

@@ -43,14 +43,15 @@ PRIMARY KEY (nrodoc)
 
 
 CREATE TABLE pasajero (
-    nrodoc varchar(15),
-    nropfrecuente varchar(15),
+    nroticket bigint AUTO_INCREMENT,
+    nroasiento bigint,
 	idviaje bigint,
-    PRIMARY KEY (nrodoc),
+    nrodoc varchar(15),
+    PRIMARY KEY (nroticket),
     FOREIGN KEY (idviaje) REFERENCES viaje (idviaje)
     ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (nrodoc) REFERENCES persona (nrodoc)
     ON UPDATE RESTRICT ON DELETE CASCADE
-    )ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT = 1; 
  
   

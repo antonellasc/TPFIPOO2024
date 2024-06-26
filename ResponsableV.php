@@ -45,7 +45,7 @@ class ResponsableV extends Persona{
 		$resp= false;
 
 		if($resp = parent :: insertar()){
-			$consultaInsertar="INSERT INTO responsable(rnumerolicencia, nrodoc) 
+			$consultaInsertar="INSERT INTO responsable(rnumerolicencia, nrodoc)
             VALUES ('".$this->getNroLicencia()."','". parent::getNroDoc()."')";
 
 			if($base->Iniciar()){
@@ -93,10 +93,10 @@ class ResponsableV extends Persona{
 	    $resp =false; 
 	    $base=new BaseDatos();
 		if(parent::modificar()){
-			$consultaModifica="'UPDATE responsable SET apellido ='".$this->getApellido()."', nombre ='".$this->getNombre()."'
-                           , telefono ='".$this->getTelefono()."', rnumerolicencia ='".$this->getNroLicencia()."'
-                           , nrodoc ='".$this->getNroDoc()."' WHERE rnumeroempleado ='".$this->getNroEmpleado()."";
-			
+			$consultaModifica="UPDATE responsable SET rnumeroempleado ='".$this->getNroEmpleado()."'rnumerolicencia ='".$this->getNroLicencia()."' 
+								WHERE nrodoc ='".parent::getNroDoc();
+							
+			var_dump($consultaModifica);
 			if($base->Iniciar()){
 				if($base->Ejecutar($consultaModifica)){
 					$resp=  true;
