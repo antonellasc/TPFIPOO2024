@@ -96,7 +96,7 @@ class ResponsableV extends Persona{
 			$consultaModifica="UPDATE responsable SET nrodoc ='".parent::getNroDoc()."', rnumerolicencia ='".$this->getNroLicencia()."' 
 								WHERE rnumeroempleado ='".$this->getNroEmpleado()."'";
 							
-			var_dump($consultaModifica);
+			
 			if($base->Iniciar()){
 				if($base->Ejecutar($consultaModifica)){
 					$resp=  true;
