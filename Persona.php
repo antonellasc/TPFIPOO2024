@@ -164,7 +164,7 @@ class Persona {
 	    $resp =false; 
 	    $base=new BaseDatos();
 		$consultaModifica="UPDATE persona SET apellido ='".$this->getApellido()."', nombre ='".$this->getNombre()."'
-                           , telefono ='".$this->getTelefono()."' WHERE nrodoc ='".$this->getNroDoc();
+                           , telefono ='".$this->getTelefono()."' WHERE nrodoc ='".$this->getNroDoc()."'";
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

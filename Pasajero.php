@@ -41,7 +41,7 @@ class Pasajero extends Persona {
         return parent :: __toString() . 
 		"Nro de ticket:" . $this->getTicket() . "\n" . 
 		"Nro de Asiento:". $this->getAsiento(). "\n". 
-        "Datos del viaje: \n" . $this->getObjViaje() ;
+        "ID viaje: " . $this->getObjViaje() ;
     }
 
     // 
@@ -172,7 +172,7 @@ class Pasajero extends Persona {
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="'DELETE FROM pasajero WHERE nrodoc ='".$this->getNroDoc()."";
+				$consultaBorra="DELETE FROM pasajero WHERE nrodoc ='".$this->getNroDoc()."'";
 				if($base->Ejecutar($consultaBorra)){
 				    if (parent::eliminar($nroDoc)) {
 						$resp = true;

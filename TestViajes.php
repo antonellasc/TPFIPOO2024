@@ -53,7 +53,7 @@ function opcionesEliminar(){
         echo "2. Eliminar responsable.". "\n";
         echo "3. Eliminar pasajero.". "\n";
         echo "4. Salir";
-        echo "Eliga una opcion: \n";
+        echo "Elija una opcion: \n";
         echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
     
@@ -154,8 +154,12 @@ function seleccionarIdViaje($objViaje){
     }
 
     $esValida = -1;
-
-    echo "Ingrese el id del Viaje a configurar: \n";
+    //
+    if(count($coleccionViajes) < 1){
+        echo "No hay ningún viaje registrado. \n";
+    }else{
+        //
+        echo "Ingrese el id del Viaje a seleccionar: \n";
     $idViaje_modificar = trim(fgets(STDIN));
 
     $viajes = new Viaje();
@@ -165,6 +169,8 @@ function seleccionarIdViaje($objViaje){
     }else{
         echo "(!!!)El id del Viaje no existe.". "\n";
     }
+    }
+    
 
     return $esValida;
 }
@@ -319,7 +325,7 @@ function insertarPasajeros($idViaje, $viaje){
 
         $pasajero->cargar($datosPas);
         $bandera = $pasajero->insertar();
-        var_dump($bandera);
+    
         if ($bandera) {
             echo "Pasajero agregado!\n";
         } else {
@@ -459,12 +465,12 @@ function eliminarDatosResponsable(){
         }
     }
 
-
+// OPCIÓN 5 del menú
 function mostrarDatosViaje($objViaje){
     $viajeInfo = null;
     $condicion = " idviaje = ";
-	echo "Ingrese el id del viaje que desea ver: \n";
-	$id = trim(fgets(STDIN));
+
+	$id = seleccionarIdViaje($objViaje);
 	if(!is_numeric($id) || $id == ""){
 		echo "Por favor, ingrese un valor numérico. \n";
 	}else{

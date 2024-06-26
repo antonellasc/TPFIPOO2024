@@ -93,8 +93,8 @@ class ResponsableV extends Persona{
 	    $resp =false; 
 	    $base=new BaseDatos();
 		if(parent::modificar()){
-			$consultaModifica="UPDATE responsable SET rnumeroempleado ='".$this->getNroEmpleado()."'rnumerolicencia ='".$this->getNroLicencia()."' 
-								WHERE nrodoc ='".parent::getNroDoc();
+			$consultaModifica="UPDATE responsable SET nrodoc ='".$this->getNroDoc()."', rnumerolicencia ='".$this->getNroLicencia()."' 
+								WHERE rnumeroempleado ='".$this->getNroEmpleado()."'";
 							
 			var_dump($consultaModifica);
 			if($base->Iniciar()){
@@ -115,7 +115,7 @@ class ResponsableV extends Persona{
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".parent::getNroDoc()."";
+				$consultaBorra="DELETE FROM responsable WHERE rnumeroempleado ='".parent::getNroDoc()."'";
 				if($base->Ejecutar($consultaBorra)){
 				    if (parent::eliminar($nroDoc)) {
 						$resp = true;
@@ -140,7 +140,7 @@ class ResponsableV extends Persona{
 			$consultaResponsables .= ' WHERE ' . $condicion;
 		}
 	
-		$consultaResponsables .= " ORDER BY nroempleado";
+		$consultaResponsables .= " ORDER BY rnumeroempleado";
 	
 		if ($base->Iniciar()) {
 			if ($base->Ejecutar($consultaResponsables)) {
