@@ -161,7 +161,7 @@ class Empresa{
 		$base=new BaseDatos();
 		$resp=false;
 		if($base->Iniciar()){
-				$consultaBorra="DELETE FROM empresa WHERE idempresa ='".$this->getIdEmpresa()."";
+				$consultaBorra="DELETE FROM empresa WHERE idempresa ='".$this->getIdEmpresa()."'";
 				if($base->Ejecutar($consultaBorra)){
 				    $resp=  true;
 				}else{
