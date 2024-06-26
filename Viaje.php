@@ -130,56 +130,6 @@ class Viaje{
     public function setmensajeoperacion($mensajeoperacion){
         $this->mensajeoperacion= $mensajeoperacion;
     }
-
-    // public function Listar($condicion)
-    // {
-    //     $arregloViajes = [];
-    //     $base = new BaseDatos();
-    //     $consultaViajes = "SELECT * FROM viaje ";
-
-    //     if ($condicion != "") {
-    //         $consultaViajes = $consultaViajes . ' WHERE ' . $condicion;
-    //     }
-
-    //     $consultaViajes .= " ORDER BY idviaje";
-
-    //     if ($base->Iniciar()) {
-    //         if ($base->Ejecutar($consultaViajes)) {
-    //             $arregloViajes = [];
-    //             while ($row = $base->Registro()) {
-    //                 $viaje = new Viaje();
-
-    //                 $idEmpresa = $row['idempresa']; 
-    //                 $empresa = new Empresa();
-    //                 if ($empresa->buscar($idEmpresa)) {
-    //                     $this->setObjEmpresa($empresa);
-    //                 }
-
-    //                 $idResponsable = $row['rnumeroempleado']; 
-    //                 $responsable = new ResponsableV();
-    //                 if ($responsable->Buscar($idResponsable)) {
-    //                     $this->setObjResponsable($responsable);
-    //                 }
-
-    //                 $viaje->cargar($row['idviaje'],$row['vdestino'],$row['vcantmaxpasajeros'],$idResponsable, $idEmpresa,$row['vimporte']);
-                    
-    //                 $pasajeros = new Pasajero();
-    //                 $arregloPasajeros = $pasajeros->listar("idviaje =". $row['idviaje']);
-    //                 $viaje->setColPasajeros($arregloPasajeros);
-
-    //                 array_push($arregloViajes, $viaje);
-    //             }
-    //         } else {
-    //             $this->setmensajeoperacion($base->getError());
-    //         }
-    //     } else {
-
-    //         $this->setmensajeoperacion($base->getError());
-    //     }
-
-    //     return $arregloViajes;
-    // }
-
     public function listar($condicion)
     //prueba listar, funciona !! 
     {

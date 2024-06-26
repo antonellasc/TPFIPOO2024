@@ -51,7 +51,8 @@ function opcionesEliminar(){
         echo "OPCIONES PARA ELIMINAR.". "\n";
         echo "1. Eliminar viaje". "\n";
         echo "2. Eliminar pasajero.". "\n";
-        echo "3. Salir \n";
+        echo "3. Eliminar empresa.". "\n";
+        echo "4. Salir \n";
         echo "Elija una opcion: \n";
         echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
@@ -103,13 +104,17 @@ do{
                         eliminarDatosPasajero();
                         break;
                     case 3:
+                        eliminarDatosEmpresa();
+                        break;
+                    case 4:
                         echo "SALIENDO AL MENU PRINCIPAL \n";
-                        break;    
+                        break; 
+
                     default:
                         echo "Opción no válida. Intente nuevamente.\n";
                         break;
                 }
-            }while ($opcionesEliminar != 3);
+            }while ($opcionesEliminar != 4);
             break;
             
         case 5:
@@ -430,6 +435,32 @@ function eliminarDatosViaje(){
         }
     } else {
         echo "No se encuentran viajes registrados.\n";
+    }
+}
+function eliminarDatosEmpresa(){
+    $empresa = new Empresa();
+    $colEmpresa = $empresa->listar("");
+    echo "Listado de empresas: \n";
+    foreach($colEmpresa as $unaEmpresa){
+        echo "\n". $unaEmpresa ."\n";
+        echo "*************\n";
+    }
+    
+    if(count($colEmpresa) > 0 ){
+        echo "Ingrese el id de la empresa a eliminar: \n";
+        $idEmpresa = trim(fgets(STDIN));
+
+        if((is_numeric ($idEmpresa)) && $idEmpresa != "" && $empresa->Buscar($idEmpresa)){
+            if($empresa->eliminar()){
+                echo "Se elimino la empresa con exito!\n";
+            } else {
+                echo "Ocurrió un error al intentar eliminar la empresa.\n";
+            }
+        } else {
+            echo "la empresa con id $idEmpresa no existe.\n";
+        }
+    } else {
+        echo "No se encuentran empresas registradas.\n";
     }
 }
 
