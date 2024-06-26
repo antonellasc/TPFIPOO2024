@@ -67,7 +67,11 @@ do{
             break;
         case 2:
             $valor = seleccionarIdViaje($objViaje);
-            $opviaje = opcionesModViaje();
+            if($valor == -1|| $valor == -2){
+                $opviaje = 4;
+            }else{
+                $opviaje = opcionesModViaje();
+            }
             switch ($opviaje) {
                 case 1:
                     modificarDatosViaje($valor);
@@ -77,6 +81,9 @@ do{
                     break;
                 case 3:
                     modificarDatosPasajero($valor, $objPasajero);
+                    break;
+                case 4:
+                    echo "SALIENDO AL MENU PRINCIPAL \n";
                     break;
             }
             break;
@@ -115,7 +122,7 @@ do{
 
 } while ($opcion != 6);
 
-//OPCION 1
+//Incorpora un nuevo viaje a la Empresa (OPCION 1)
 function ingresarNuevoViaje($objEmpresa){
 
     echo "Ingrese el destino del viaje: ";
@@ -139,8 +146,10 @@ function ingresarNuevoViaje($objEmpresa){
 
 }
 
-//selecciona el viaje correspondiente a travez de su clave primaria, chequea que exista
+//Selecciona el viaje correspondiente a travez de su clave primaria, chequea que exista
 function seleccionarIdViaje($objViaje){
+    $esValida = 0;
+
     $coleccionViajes = $objViaje->listar("");
     for($i=0;$i<count($coleccionViajes);$i++){
         $viaje = $coleccionViajes[$i];
@@ -152,29 +161,26 @@ function seleccionarIdViaje($objViaje){
 
     }
 
-    $esValida = -1;
-    //
     if(count($coleccionViajes) < 1){
         echo "No hay ningún viaje registrado. \n";
+        $esValida = -1;
     }else{
-        //
         echo "Ingrese el id del Viaje a seleccionar: \n";
-    $idViaje_modificar = trim(fgets(STDIN));
+        $idViaje_modificar = trim(fgets(STDIN));
 
-    $viajes = new Viaje();
-    $viajeEncontrado = $viajes->buscar($idViaje_modificar);
-    if($viajeEncontrado){
-        $esValida = $idViaje_modificar;
-    }else{
-        echo "(!!!)El id del Viaje no existe.". "\n";
+        $viajes = new Viaje();
+        $viajeEncontrado = $viajes->buscar($idViaje_modificar);
+        if($viajeEncontrado){
+            $esValida = $idViaje_modificar;
+        }else{
+            echo "(!!!)El id del Viaje no existe.". "\n";
+            $esValida = -2;
+        }
     }
-    }
-    
-
     return $esValida;
 }
 
-//modificar datos de un viaje (OPCION 1 <<OPCION2>>)
+//Modificar datos de un viaje (OPCION 1 <<OPCION2>>)
 function modificarDatosViaje($codigoViaje){
     $viajes = new Viaje();
 
@@ -198,66 +204,56 @@ function modificarDatosViaje($codigoViaje){
         }
 }
 
-//modificar datos del responsable del viaje (OPCION 2 <<OPCION 2>>)
-
+//Modificar datos del responsable del viaje (OPCION 2 <<OPCION 2>>)
 function modificarDatosResponsable($idViaje, $viaje) {
     if ($viaje->Buscar($idViaje)) {
         $responsable = $viaje->getObjResponsable();
 
-        echo "Responsable actual:\n";
         if($viaje->getObjResponsable() == null){
             $mensaje = "No hay viaje cargado, cargue uno";
             return $mensaje;
         }else{
+            echo "Responsable actual:\n";
             echo $responsable->__toString();
         }
         echo "Ingrese Numero de documento del Responsable a modificar:";
-        $nroDocConfig = trim(fgets(STDIN));
+        $nroDoc_modificar = trim(fgets(STDIN));
 
         $persona = new Persona();
-        $persona->Buscar($nroDocConfig);
+        $busqueda = $persona->Buscar($nroDoc_modificar);
 
-        echo "--------------------------------------------------------\n";
-        echo "Nuevo nombre: \n";
-        $nuevoNomResp = trim(fgets(STDIN));
-        echo "Nuevo apellido: \n";
-        $nuevoApeResp = trim(fgets(STDIN));
-        echo "Nuevo nro de teléfono: \n";
-        $nuevoTelResp = trim(fgets(STDIN)); 
+        if($busqueda){
+            $nroEmpleado = $responsable->getNroEmpleado();
+            $nuevoNombre = trim(readline("Nombre: "));
+            $nuevaApellido = trim(readline("Apellido: "));
+            $nuevoTelefono = trim(readline("Telefono: "));
+            $nuevoNroLic= trim(readline("Numero de licencia: "));
 
-        // Datos para actualizar en Persona
-        $datosPersona = [
-            'nombre' => $nuevoNomResp,
-            'apellido' => $nuevoApeResp,
-            'nrodoc' => $nroDocConfig, 
-            'telefono' => $nuevoTelResp,
-        ];
+            $datosResponsable= [
+                'nombre' => $nuevoNombre, 
+                'apellido' => $nuevaApellido, 
+                'nrodoc' => $nroDoc_modificar, 
+                'telefono' => $nuevoTelefono,
+                'rnumeroempleado' => $nroEmpleado, 
+                'rnumerolicencia' => $nuevoNroLic
+            ];
 
-        // Cargar y modificar los datos de la persona
-        $persona->cargar($datosPersona);
-        $exitoPersona = $persona->modificar();
-
-        if ($exitoPersona) {
-            $nuevaLicResp = trim(readline("Nuevo nro de licencia: "));
-            $responsable->setNroLicencia($nuevaLicResp);
-
-            $exitoResponsable = $responsable->modificar();
-
-            if ($exitoResponsable) {
-                echo "La modificación del responsable se realizó con éxito !\n";
+            $responsable->cargar($datosResponsable);
+            $seLogro = $responsable->modificar();
+            if ($seLogro) {
+                echo "Se cambiaron los datos con exito!\n";
             } else {
-                echo "(!!!) No es posible realizar la modificación del responsable\n";
+                echo "(!!!) No es posible realizar la modificacion\n";
             }
-        } else {
-            echo "(!!!) No es posible realizar la modificación de la persona\n";
+        }else{
+            echo "(!!!) No hay Responsable que figure con ese numero de documento ingresado."."\n";
         }
     } else {
-        echo "No se encontró el viaje con ID: $idViaje\n";
+        echo "No se encontró el responsable con ID: $idViaje\n";
     }
 }
 
-
-//modificar datos de un pasajero (OPCION 3 <<OPCION 2>>)
+//Modificar datos de un pasajero (OPCION 3 <<OPCION 2>>)
 function modificarDatosPasajero($idViaje, $objPasajero){
     $condicion = "idviaje = $idViaje";
     $arregloPasajeros = $objPasajero->listar($condicion);
@@ -306,7 +302,7 @@ function modificarDatosPasajero($idViaje, $objPasajero){
 
 }
 
-//incorporar un pasajero nuevo a un viaje (OPCION 3)
+//Incorporar un pasajero nuevo a un viaje (OPCION 3)
 function insertarPasajeros($idViaje, $viaje){
     $pasajero = new Pasajero();
     $persona = new Persona();
@@ -361,7 +357,7 @@ function insertarPasajeros($idViaje, $viaje){
     }
 }
 
-
+//Incorpora un responsable a un nuevo viaje (<<OPCION 1>>)
 function insertarResponsable(){
     $persona = new Persona();
     $estaRepetido = false;
@@ -409,7 +405,7 @@ function insertarResponsable(){
     }
 }
 
-//elimina datos de un viaje (OPCION 4)
+//Elimina un viaje (OPCION 4)
 function eliminarDatosViaje(){
     $viaje = new Viaje();
     $colViajes = $viaje->listar("");
@@ -437,33 +433,35 @@ function eliminarDatosViaje(){
     }
 }
 
-    function eliminarDatosPasajero(){
-        $pasajero = new Pasajero();
-        $colPasajeros = $pasajero->listar();
+//Elimina un pasajero (OPCION 4)
+function eliminarDatosPasajero(){
+    $pasajero = new Pasajero();
+    $colPasajeros = $pasajero->listar();
 
-        echo "Listado de pasajeros: \n";
-        foreach($colPasajeros as $unPasajero){
-            echo "\n". $unPasajero ."\n";
-            echo "*************\n";
-        }
-        if(count($colPasajeros) > 0 ){
-            echo "Ingrese el numero de documento del pasajero a eliminar: \n";
-            $dniPasajero = trim(fgets(STDIN));
-            if($dniPasajero != null && $pasajero->Buscar($dniPasajero)){
-                if($pasajero->eliminar($dniPasajero)){
-                    echo "Se eliminó el pasajero con exito!\n";
-                } else {
-                    echo "Ocurrió un error al intentar eliminar el pasajero.\n";
-                }
-            } else {
-                echo "El pasajero con numero de documento: " . $dniPasajero . "no existe.\n";
-            }
-        } else {
-            echo "No existen pasajeros registrados.\n";
-        }
+    echo "Listado de pasajeros: \n";
+    foreach($colPasajeros as $unPasajero){
+        echo "\n". $unPasajero ."\n";
+        echo "**************************\n";
     }
 
-// OPCIÓN 5 del menú
+    if(count($colPasajeros) > 0 ){
+        echo "Ingrese el numero de documento del pasajero a eliminar: \n";
+        $dniPasajero = trim(fgets(STDIN));
+        if($dniPasajero != null && $pasajero->Buscar($dniPasajero)){
+            if($pasajero->eliminar($dniPasajero)){
+                echo "Se eliminó el pasajero con exito!\n";
+            } else {
+                echo "Ocurrió un error al intentar eliminar el pasajero.\n";
+            }
+        } else {
+            echo "El pasajero con numero de documento: " . $dniPasajero . "no existe.\n";
+        }
+    } else {
+        echo "No existen pasajeros registrados.\n";
+    }
+}
+
+//Muestra los datos cargados de cada viaje (OPCION 5)
 function mostrarDatosViaje($objViaje){
     $viajeInfo = null;
     $condicion = " idviaje = ";
