@@ -40,7 +40,7 @@ function opcionesModViaje(){
         echo "1.Datos del viaje". "\n";
         echo "2.Responsable del viaje". "\n";
         echo "3.Datos de Pasajeros". "\n";
-        echo "Eliga una opcion: ";
+        echo "Eliga una opcion: \n";
         echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
         
@@ -50,9 +50,8 @@ function opcionesEliminar(){
         echo "+====================================+\n";
         echo "OPCIONES PARA ELIMINAR.". "\n";
         echo "1. Eliminar viaje". "\n";
-        echo "2. Eliminar responsable.". "\n";
-        echo "3. Eliminar pasajero.". "\n";
-        echo "4. Salir";
+        echo "2. Eliminar pasajero.". "\n";
+        echo "3. Salir \n";
         echo "Elija una opcion: \n";
         echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
@@ -86,26 +85,26 @@ do{
             insertarPasajeros($valor, $objViaje);
             break;
         case 4:
-            $opcionesEliminar = opcionesEliminar();
+            
             do{
+                $opcionesEliminar = opcionesEliminar();
                 switch ($opcionesEliminar){
                     case 1:
                         eliminarDatosViaje();
                         break;
                     case 2:
-                        eliminarDatosResponsable();
-                        break;
-                    case 3:
                         eliminarDatosPasajero();
                         break;
-                    case 4:
-                        echo "SALIENDO AL MENU PRINCIPAL";
+                    case 3:
+                        echo "SALIENDO AL MENU PRINCIPAL \n";
                         break;    
+                    default:
+                        echo "Opción no válida. Intente nuevamente.\n";
+                        break;
                 }
-                break;
-            }while ($opcion != 0);
-
+            }while ($opcionesEliminar != 3);
             break;
+            
         case 5:
             mostrarDatosViaje($objViaje);
             break;
@@ -423,33 +422,6 @@ function eliminarDatosViaje(){
         }
     } else {
         echo "No se encuentran viajes registrados.\n";
-    }
-}
-
-
-function eliminarDatosResponsable(){
-    $responsable = new ResponsableV();
-    $colResponsable = $responsable->listar();
-    echo "Listado de responsables: \n";
-
-    foreach($colResponsable as $unResponsable){
-        echo "\n". $unResponsable ."\n";
-        echo "*************\n";
-    }
-    if(count($colResponsable) > 0){ 
-        echo "Ingrese el numero de empleado del responsable a eliminar: \n";
-        $nroResponsable = trim(fgets(STDIN));
-        if(is_numeric($nroResponsable) && $nroResponsable != " " && $responsable->buscar($nroResponsable)){
-            if($responsable->eliminar($responsable->getNroDoc())){
-                echo "Se elimino el responsable con exito!\n";
-            } else{
-                echo "Ocurrió un error al intentar eliminar el responsable.\n";
-            }
-        }else{
-            echo "El numero de empleado " . $nroResponsable . "no existe.\n";
-        }
-    }else{
-        echo "No se encuentran responsables registrados.\n";
     }
 }
 
