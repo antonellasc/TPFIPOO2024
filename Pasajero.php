@@ -151,18 +151,18 @@ class Pasajero extends Persona {
     public function modificar(){
 	    $resp =false; 
 	    $base=new BaseDatos();
-		$consultaModifica="'UPDATE pasajero SET apellido ='".$this->getApellido()."', nombre ='".$this->getNombre()."'
-                           , telefono ='".$this->getTelefono()."' WHERE nrodoc ='".$this->getNroDoc()."";
-		if($base->Iniciar()){
-			if($base->Ejecutar($consultaModifica)){
-			    $resp=  true;
+		if(parent::modificar()){
+			$consultaModifica="UPDATE pasajero SET nroasiento =".$this->getAsiento().", nroticket =".$this->getTicket().",idviaje=".$this->getObjViaje()."
+							 WHERE nrodoc =". $this->getNroDoc();
+			if($base->Iniciar()){
+				if($base->Ejecutar($consultaModifica)){
+			    	$resp=  true;
+				}else{
+				$this->setmensajeoperacion($base->getError());
+				}
 			}else{
 				$this->setmensajeoperacion($base->getError());
-				
 			}
-		}else{
-				$this->setmensajeoperacion($base->getError());
-			
 		}
 		return $resp;
 	}

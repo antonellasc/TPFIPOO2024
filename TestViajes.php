@@ -260,36 +260,48 @@ function modificarDatosResponsable($idViaje, $viaje) {
 //modificar datos de un pasajero (OPCION 3 <<OPCION 2>>)
 function modificarDatosPasajero($idViaje, $objPasajero){
     $condicion = "idviaje = $idViaje";
-        $arregloPasajeros = $objPasajero->listar($condicion);
+    $arregloPasajeros = $objPasajero->listar($condicion);
         foreach ($arregloPasajeros as $pasajero) {
             echo $pasajero;
             echo "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
         }
-        echo "Ingrese Numero de documento del Pasajero a modificar:";
-        $nroDoc_modificar = trim(fgets(STDIN));
 
-        $pasajeros = new Pasajero();
-        $busqueda = $pasajeros->Buscar($nroDoc_modificar);
-        if($busqueda){
-            echo "Nombre:";
-            $nuevoNombre = trim(fgets(STDIN));
-            echo "Apellido:";
-            $nuevaApellido= trim(fgets(STDIN));
-            echo "Telefono:";
-            $nuevoTelefono= trim(fgets(STDIN));
-            echo "Numero de asiento";
-            $nuevoAsiento= trim(fgets(STDIN));
-            $pasajeros->setNombre($nuevoNombre);
-            $pasajeros->setApellido($nuevaApellido);
-            $pasajeros->setTelefono($nuevoTelefono);
-            $pasajeros->setAsiento($nuevoAsiento);
-            
-            $seLogro = $pasajero->modificar();
-            if ($seLogro) {
-                echo "Se cambiaron los datos con exito!\n";
-            } else {
-                echo "(!!!) No es posible realizar la modificacion\n";
+        if(count($arregloPasajeros) == null){
+            echo "No es posible modificar ya que no hay pasajeros previamente cargados.\n";
+        }else{
+            $numTicket = $pasajero->getTicket();
+            echo "Ingrese Numero de documento del Pasajero a modificar:";
+            $nroDoc_modificar = trim(fgets(STDIN));
+            $persona = new Persona();
+            $busqueda = $persona->Buscar($nroDoc_modificar);
+
+            if($busqueda){
+                $nuevoNombre = trim(readline("Nombre: "));
+                $nuevaApellido = trim(readline("Apellido: "));
+                $nuevoTelefono = trim(readline("Telefono: "));
+                $nuevoAsiento = trim(readline("Numero de asiento: "));
+
+                $datosPas= [
+                    'nombre' => $nuevoNombre, 
+                    'apellido' => $nuevaApellido, 
+                    'nrodoc' => $nroDoc_modificar, 
+                    'telefono' => $nuevoTelefono,
+                    'nroticket' => $numTicket,
+                    'nroasiento' => $nuevoAsiento,
+                    'idviaje' => $idViaje,
+                ];
+
+                $pasajero->cargar($datosPas);
+                $seLogro = $pasajero->modificar();
+                if ($seLogro) {
+                    echo "Se cambiaron los datos con exito!\n";
+                } else {
+                    echo "(!!!) No es posible realizar la modificacion\n";
+                }
+            }else{
+                echo "(!!!) No hay pasajero que figure con ese numero de documento ingresado."."\n";
             }
+
         }
 
 }

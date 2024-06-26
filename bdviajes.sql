@@ -26,7 +26,8 @@ CREATE TABLE viaje (
     rnumeroempleado bigint,
     vimporte float,
     PRIMARY KEY (idviaje),
-    FOREIGN KEY (idempresa) REFERENCES empresa (idempresa),
+    FOREIGN KEY (idempresa) REFERENCES empresa (idempresa)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
 	FOREIGN KEY (rnumeroempleado) REFERENCES responsable (rnumeroempleado)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
