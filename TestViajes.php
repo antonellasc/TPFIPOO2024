@@ -211,17 +211,26 @@ function seleccionarIdViaje($objViaje){
 //Modificar datos de un viaje (OPCION 1 <<OPCION2>>)
 function modificarDatosViaje($codigoViaje){
     $viajes = new Viaje();
+    $empresa = new Empresa();
+    $responsable = new ResponsableV();
 
     echo "--------------------------------------------------------\n";
-        echo "Nuevo destino:";
+        echo "Nuevo destino: \n";
         $nuevoDestino = trim(fgets(STDIN));
-        echo "Nueva cantidad maxima de Pasajeros:";
+        echo "Nueva cantidad maxima de Pasajeros: \n";
         $nuevaCapacidad = trim(fgets(STDIN));
-        echo "Nuevo Importe:";
+        echo "Nuevo Importe: \n";
         $nuevoImporte = trim(fgets(STDIN));
+        // echo "Nuevo ID empresa: \n";
+        // $nuevoIdEm = trim(fgets(STDIN));
+        // echo "Nuevo nro empleado: \n";
+        // $nuevoNroEmpleado = trim(fgets(STDIN));
 
+        
         $viajes->setDestino($nuevoDestino);
         $viajes->setCantMaxPasajeros($nuevaCapacidad);
+        // $viajes->setObjEmpresa($nuevoIdEm);
+        // $viajes->setObjResponsable($nuevoNroEmpleado);
         $viajes->setImporte($nuevoImporte);
 
         $exito = $viajes->modificar($codigoViaje);

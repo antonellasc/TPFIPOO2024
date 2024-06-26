@@ -134,7 +134,7 @@ class Empresa{
 	    $resp =false; 
 	    $base=new BaseDatos();
 		$consultaModifica="UPDATE empresa SET enombre ='".$this->getNombreEmpresa()."', edireccion ='".$this->getDomicilioEmpresa()."'
-                           WHERE idempresa ='".$this->getIdEmpresa()."";
+                           WHERE idempresa ='".$this->getIdEmpresa()."'";
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

@@ -133,7 +133,7 @@ class Viaje{
         $this->mensajeoperacion= $mensajeoperacion;
     }
     public function listar($condicion)
-    //prueba listar, funciona !! 
+     
     {
         $arregloViaje = [];
         $base = new BaseDatos();
@@ -245,7 +245,11 @@ class Viaje{
 
         $consultaModificar = "UPDATE viaje 
         SET vdestino = '" . $this->getDestino() . 
-        "', vcantmaxpasajeros = '" . $this->getCantMaxPasajeros() . 
+        "', vcantmaxpasajeros = '" . $this->getCantMaxPasajeros() .
+        // modifico
+        // "', idempresa = '" .$this->getObjEmpresa(). 
+        // "', rnumeroempleado = '" .$this->getObjResponsable().
+        // 
         "', vimporte = '" .$this->getImporte(). 
         "' WHERE idviaje = " . $id_viaje;
 
@@ -276,24 +280,6 @@ class Viaje{
             $this->setmensajeoperacion($base->getError());
         }
         return $resp;
-    }
-
-
-    public function agregarPasajeros($nuevoNombre,$nuevaApellido,$nuevoTelefono, $nuevoDoc, $nuevaFrec, $idViaje){
-        $seAgrego = false;
-
-        $pasajeros = new Pasajero();
-        $hayPasajeroRepetido = $pasajeros->Buscar($nuevoDoc);
-        
-        if(!$hayPasajeroRepetido){
-            $datosPasaj = ['nombre' => $nuevoNombre, 'apellido' => $nuevaApellido, 'nrodoc' => $nuevoDoc, 'telefono' => $nuevoTelefono, 'nropfrecuente' => $nuevaFrec, 'idviaje' => $idViaje];
-            // $pasajeros->setNroPFrecuente($nuevaFrec);
-            // $pasajeros->setObjViaje($idViaje);
-            $pasajeros->cargar($datosPasaj);
-            $seAgrego = true; 
-        }
-
-        return $seAgrego ;
     }
 
 
