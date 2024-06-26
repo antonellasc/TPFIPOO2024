@@ -8,15 +8,24 @@ include_once 'Viaje.php';
 include_once 'Empresa.php';
 
 $objEmpresa = New Empresa();
-    $enombre = "Viaje Feliz";
-    $edomicilio = "Belgrano 600";
-    $objEmpresa->cargar(null, $enombre, $edomicilio);
-$objEmpresa->insertar();
-
 $objViaje = New Viaje();
 $objPasajero = New Pasajero();
 $objResponsable = New ResponsableV();
 
+function checkEmpresa($objEmpresa){
+    $hayEmpresaCreada = false;
+    $arregloEmpresa  = $objEmpresa->listar();
+    if(count($arregloEmpresa) == null){
+        $empresaNombre = "Viaje Feliz";
+        $empresaDomicilio = "Belgrano 600";
+        $objEmpresa->cargar(null, $empresaNombre, $empresaDomicilio);
+        $objEmpresa->insertar();
+        $hayEmpresaCreada = true;
+    }else{
+        $hayEmpresaCreada = true;
+    }
+    return $hayEmpresaCreada;
+}
 
 function opciones(){ 
         echo "+--------------------------------------------------+\n";
@@ -61,7 +70,13 @@ function opcionesEliminar(){
 }
 
 do{
-    $opcion = opciones();
+    $advertencia = checkEmpresa($objEmpresa);
+
+    if($advertencia == true){
+        $opcion = opciones();
+    }else{
+        $opcion = 6;
+    }
     switch ($opcion) {
         case 1:
             ingresarNuevoViaje($objEmpresa);

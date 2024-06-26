@@ -85,21 +85,25 @@ class Viaje{
     // TO STRING
     public function __toString(){
         return "Id viaje: " . $this->getIdViaje() . "\n" . 
-        "Destino: " . $this->getDestino() . "\n" . 
-        "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
-        "Responsable del viaje: \n" . $this->getObjResponsable() . 
-        "Empresa de viajes: \n" . $this->getObjEmpresa() . "\n" .  
-        "Pasajeros: \n" . $this->mostrarColeccionPasajeros() . "\n" . 
-        "Importe del viaje: $" . $this->getImporte() . "\n";
+            "Destino: " . $this->getDestino() . "\n" . 
+            "Cant. máxima de pasajeros: " . $this->getCantMaxPasajeros() . "\n" . 
+            "\nResponsable del viaje \n" . $this->getObjResponsable() . 
+            "\nEmpresa de viajes: \n" . $this->getObjEmpresa() . "\n" .  
+            "Pasajeros: \n" . $this->mostrarColeccionPasajeros() . "\n" . 
+            "Importe del viaje: $" . $this->getImporte() . "\n";
     }
 
     public function mostrarColeccionPasajeros(){
         // pasa el array de pasajeros a string para que pueda ser mostrado por consola
         $mostrar = "";
         $pasajeros= $this->getColPasajeros();
-        foreach ($pasajeros as $pasajero) {
-            $mostrar .= $pasajero . "\n";
-            $mostrar.= "----------------------------------------------------------------------\n";
+        if($pasajeros == null){
+            $mostrar= "No hay pasajeros cargados!\n";
+        }else{
+            foreach ($pasajeros as $pasajero) {
+                $mostrar .= $pasajero . "\n";
+                $mostrar.= "------------------------------\n";
+            }
         }
         return $mostrar;
     }
@@ -108,8 +112,9 @@ class Viaje{
         // función generica para pasar un array a string
         $mostrarC = "";
         foreach ($unaColeccion as $elemento) {
+            $mostrarC.= ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
             $mostrarC .= $elemento . "\n";
-            $mostrarC.= "----------------------------------------------------------------------\n";
+            $mostrarC.= ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
         }
         return $mostrarC;
     }
