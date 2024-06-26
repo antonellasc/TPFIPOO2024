@@ -1,7 +1,4 @@
 <?php
-include_once 'Empresa.php';
-include_once 'ResponsableV.php';
-
 class Viaje{
     private $idV;
     private $destino;
@@ -18,8 +15,8 @@ class Viaje{
         $this->idV = "";
         $this->destino = "";
         $this->cantMaxPasajeros = "";
-        $this->objResponsable = "";
-        $this->objEmpresa = "";
+        $this->objResponsable = null;
+        $this->objEmpresa = null;
         $this->arrayPasajeros = [];
         $this->importe = "";
     }

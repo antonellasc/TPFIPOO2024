@@ -93,8 +93,8 @@ class ResponsableV extends Persona{
 	    $resp =false; 
 	    $base=new BaseDatos();
 		if(parent::modificar()){
-			$consultaModifica="UPDATE responsable SET nrodoc ='".parent::getNroDoc()."', rnumerolicencia ='".$this->getNroLicencia()."' 
-								WHERE rnumeroempleado ='".$this->getNroEmpleado()."'";
+			$consultaModifica="UPDATE responsable SET rnumerolicencia =".$this->getNroLicencia()."
+								WHERE rnumeroempleado =".$this->getNroEmpleado();
 							
 			
 			if($base->Iniciar()){

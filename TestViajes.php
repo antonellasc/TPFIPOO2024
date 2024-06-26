@@ -35,7 +35,8 @@ function opciones(){
         echo "3: Ingresar Pasajeros". "\n";
         echo "4: Opciones para eliminar". "\n";
         echo "5: Mostrar datos del viaje". "\n";
-        echo "6: Salir". "\n";
+        echo "6: Modificar datos de la Empresa". "\n";
+        echo "7: Salir". "\n";
         echo "Elija una opcion: \n";
         echo "+--------------------------------------------------+\n";
         $opcion = trim(fgets(STDIN));
@@ -75,7 +76,7 @@ do{
     if($advertencia == true){
         $opcion = opciones();
     }else{
-        $opcion = 6;
+        $opcion = 7;
     }
     switch ($opcion) {
         case 1:
@@ -136,15 +137,22 @@ do{
             mostrarDatosViaje($objViaje);
             break;
         case 6:
+            modificarDatosEmpresa($objEmpresa);
+        case 7:
             echo "*<<<<<<<<<<<<<<<< FIN DEL PROGRAMA >>>>>>>>>>>>>>>>*" ;
             break;
     }
 
-} while ($opcion != 6);
+} while ($opcion != 7);
 
 //Incorpora un nuevo viaje a la Empresa (OPCION 1)
 function ingresarNuevoViaje($objEmpresa){
 
+    $empresas= $objEmpresa->listar();
+    foreach ($empresas as $empresa){
+        $empresaViaje = $empresa;
+    }
+    
     echo "Ingrese el destino del viaje: ";
     $destino = trim(fgets(STDIN));
     echo "Ingrese la cantidad máxima de pasajeros: ";
@@ -156,7 +164,7 @@ function ingresarNuevoViaje($objEmpresa){
     $importe = trim(fgets(STDIN));
 
     $viaje = new Viaje();
-    $viaje->cargar(null, $destino, $cantMaxPasajeros,$nuevoResponsable,$objEmpresa, $importe);
+    $viaje->cargar(null, $destino, $cantMaxPasajeros,$nuevoResponsable,$empresaViaje, $importe);
     $seAgrego = $viaje->insertar();
     if($seAgrego){
         echo "Viaje agregado!"."\n";
@@ -528,4 +536,23 @@ function mostrarDatosViaje($objViaje){
 		}
 }
 
+//Modifica datos de una empresa(OPCION 6)
+function modificarDatosEmpresa($objEmpresa){
+    $empresaMod  = $objEmpresa->listar();
+    foreach($empresaMod as $empresa){
+        echo $empresa->__toString();
+    }
+    echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
+    //$idEmpresa = $empresa->getIdEmpresa();
+    $modEmpresa = trim(readline("Nuevo nombre: "));
+    $modDireccion = trim(readline("Nuevo direccion: "));
+    $empresa->setNombreEmpresa($modEmpresa);
+    $empresa->setDomicilioEmpresa($modDireccion);
+    $cambio = $empresa->modificar();
+    if($cambio){
+        echo "Cambios realizado con exito!\n";
+    }else{
+        echo "No es posible modificar la empresa\n";
+    }
+}
 ?>
