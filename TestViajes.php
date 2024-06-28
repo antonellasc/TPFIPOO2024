@@ -241,6 +241,7 @@ function modificarDatosViaje($codigoViaje){
         }
 }
 
+
 //Modificar datos del responsable del viaje (OPCION 2 <<OPCION 2>>)
 function modificarDatosResponsable($idViaje, $viaje) {
     if ($viaje->Buscar($idViaje)) {
