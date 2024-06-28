@@ -486,7 +486,7 @@ function eliminarDatosEmpresa(){
             if($empresa->eliminar()){
                 echo "Se elimino la empresa con exito!\n";
             } else {
-                echo "Ocurrió un error al intentar eliminar la empresa.\n";
+                echo "(!!!) La empresa no puede ser eliminada porque hay Viajes que dependen de este.\n";
             }
         } else {
             echo "la empresa con id $idEmpresa no existe.\n";
