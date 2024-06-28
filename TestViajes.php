@@ -28,15 +28,16 @@ function checkEmpresa($objEmpresa){
 }
 
 function opciones(){ 
-        echo "+--------------------------------------------------+\n";
-        echo "MENU DE OPCIONES PRINCIPAL". "\n";
-        echo "1: Ingresar Nuevo Viaje". "\n";
-        echo "2: Modificar un Viaje existente". "\n";
-        echo "3: Ingresar Pasajeros". "\n";
-        echo "4: Opciones para eliminar". "\n";
-        echo "5: Mostrar datos del viaje". "\n";
-        echo "6: Modificar datos de la Empresa". "\n";
-        echo "7: Salir". "\n";
+        echo "\n+--------------------------------------------------+\n";
+        echo "MENU DE OPCIONES PRINCIPAL". "\n\n";
+        echo "1: Ingresar nuevo Viaje". "\n";
+        echo "2: Ingresar nueva empresa \n";
+        echo "3: Modificar un Viaje existente". "\n";
+        echo "4: Ingresar Pasajeros". "\n";
+        echo "5: Opciones para eliminar". "\n";
+        echo "6: Mostrar datos del viaje". "\n";
+        echo "7: Modificar datos de la Empresa". "\n";
+        echo "8: Salir". "\n";
         echo "Elija una opcion: \n";
         echo "+--------------------------------------------------+\n";
         $opcion = trim(fgets(STDIN));
@@ -82,7 +83,10 @@ do{
         case 1:
             ingresarNuevoViaje($objEmpresa);
             break;
-        case 2:
+        case 2;
+        ingresarNuevaEmpresa($objEmpresa);
+            break;  
+        case 3:
             $valor = seleccionarIdViaje($objViaje);
             if($valor == -1|| $valor == -2){
                 $opviaje = 4;
@@ -104,11 +108,11 @@ do{
                     break;
             }
             break;
-        case 3:
+        case 4:
             $valor = seleccionarIdViaje($objViaje);
             insertarPasajeros($valor, $objViaje);
             break;
-        case 4:
+        case 5:
             
             do{
                 $opcionesEliminar = opcionesEliminar();
@@ -133,45 +137,83 @@ do{
             }while ($opcionesEliminar != 4);
             break;
             
-        case 5:
+        case 6:
             mostrarDatosViaje($objViaje);
             break;
-        case 6:
-            modificarDatosEmpresa($objEmpresa);
         case 7:
-            echo "*<<<<<<<<<<<<<<<< FIN DEL PROGRAMA >>>>>>>>>>>>>>>>*" ;
+            modificarDatosEmpresa($objEmpresa);
+        case 8:
+            echo "*<<<<<<<<<<<<<<<< FIN DEL PROGRAMA >>>>>>>>>>>>>>>>* \n" ;
             break;
     }
 
-} while ($opcion != 7);
+} while ($opcion != 8);
+
+function ingresarNuevaEmpresa($objEmpresa){
+    $colEmpresas = $objEmpresa->listar();
+
+    echo "Ingrese el nombre de la empresa: \n";
+    $nombreEmpresa = trim(fgets(STDIN));
+    echo "Ingrese el domicilio de la empresa: \n";
+    $domicilioEmpresa = trim(fgets(STDIN));
+
+    $empresa = new Empresa();
+    $empresa->cargar(null, $nombreEmpresa, $domicilioEmpresa);
+    if ($empresa->insertar()){
+        echo "Viaje agregado con exito \n";
+    } else {
+        echo "(!!!)El viaje no se pudo agregar\n";
+    }
+    
+}
 
 //Incorpora un nuevo viaje a la Empresa (OPCION 1)
 function ingresarNuevoViaje($objEmpresa){
-
-    $empresas= $objEmpresa->listar();
-    foreach ($empresas as $empresa){
-        $empresaViaje = $empresa;
-    }
+    $empresas = $objEmpresa->listar();
     
-    echo "Ingrese el destino del viaje: ";
-    $destino = trim(fgets(STDIN));
-    echo "Ingrese la cantidad máxima de pasajeros: ";
-    $cantMaxPasajeros = trim(fgets(STDIN));
+    if (count($empresas) > 0) {
+        echo "Listado de empresas existentes: \n";
+        foreach ($empresas as $unaEmpresa) {
+            echo "\n" . $unaEmpresa . "\n";
+            echo "**************************\n";
+        }
+        
+        echo "Ingrese el ID de la empresa a la que desea agregar el viaje: ";
+        $idEmpresaSeleccionada = trim(fgets(STDIN));
+        
+        // Verificar que el ID ingresado sea válido y exista en la lista de empresas
+        $empresaSeleccionada = null;
+        foreach ($empresas as $unaEmpresa) {
+            if ($unaEmpresa->getIdEmpresa() == $idEmpresaSeleccionada) {
+                $empresaSeleccionada = $unaEmpresa;
+            }
+        }
+        
+        if ($empresaSeleccionada) {
+            echo "Ingrese el destino del viaje: ";
+            $destino = trim(fgets(STDIN));
+            echo "Ingrese la cantidad máxima de pasajeros: ";
+            $cantMaxPasajeros = trim(fgets(STDIN));
 
-    $nuevoResponsable = insertarResponsable();
+            $nuevoResponsable = insertarResponsable();
 
-    echo "Ingrese el importe del viaje: ";
-    $importe = trim(fgets(STDIN));
+            echo "Ingrese el importe del viaje: ";
+            $importe = trim(fgets(STDIN));
 
-    $viaje = new Viaje();
-    $viaje->cargar(null, $destino, $cantMaxPasajeros,$nuevoResponsable,$empresaViaje, $importe);
-    $seAgrego = $viaje->insertar();
-    if($seAgrego){
-        echo "Viaje agregado!"."\n";
-    }else {
-        echo "(!!!)El viaje no se pudo agregar\n";
+            $viaje = new Viaje();
+            $viaje->cargar(null, $destino, $cantMaxPasajeros, $nuevoResponsable, $empresaSeleccionada, $importe);
+            $seAgrego = $viaje->insertar();
+            if($seAgrego){
+                echo "Viaje agregado con éxito!\n";
+            } else {
+                echo "(!!!)El viaje no se pudo agregar\n";
+            }
+        } else {
+            echo "ID de empresa no válido.\n";
+        }
+    } else {
+        echo "No hay empresas registradas.\n";
     }
-
 }
 
 //Selecciona el viaje correspondiente a travez de su clave primaria, chequea que exista
@@ -246,7 +288,7 @@ function modificarDatosResponsable($idViaje, $viaje) {
     if ($viaje->Buscar($idViaje)) {
         $responsable = $viaje->getObjResponsable();
 
-        if($viaje->getObjResponsable() == null){
+        if($responsable == null){
             $mensaje = "No hay viaje cargado, cargue uno";
             return $mensaje;
         }else{
@@ -486,7 +528,7 @@ function eliminarDatosEmpresa(){
             if($empresa->eliminar()){
                 echo "Se elimino la empresa con exito!\n";
             } else {
-                echo "(!!!) La empresa no puede ser eliminada porque hay Viajes que dependen de este.\n";
+                echo "(!!!) La empresa no puede ser eliminada porque hay Viajes que dependen de ella.\n";
             }
         } else {
             echo "la empresa con id $idEmpresa no existe.\n";
