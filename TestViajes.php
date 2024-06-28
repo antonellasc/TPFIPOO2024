@@ -212,7 +212,7 @@ function seleccionarIdViaje($objViaje){
 function modificarDatosViaje($codigoViaje){
     $viajes = new Viaje();
     // $empresa = new Empresa();
-    // $responsable = new ResponsableV();
+    $resp = new ResponsableV();
 
     echo "--------------------------------------------------------\n";
         echo "Nuevo destino: \n";
@@ -221,10 +221,18 @@ function modificarDatosViaje($codigoViaje){
         $nuevaCapacidad = trim(fgets(STDIN));
         echo "Nuevo Importe: \n";
         $nuevoImporte = trim(fgets(STDIN));
-        // echo "Nuevo ID empresa: \n";
-        // $nuevoIdEm = trim(fgets(STDIN));
-        // echo "Nuevo nro empleado: \n";
-        // $nuevoNroEmpleado = trim(fgets(STDIN));
+        // echo "¿Desea cambiar al responsable del viaje? s/n \n";
+        // $rta = strtolower(trim(fgets(STDIN)));
+        // if($rta == "s"){
+	        
+	    //     $colResponsables = $responsable->listar("");
+        //     echo $viajes->mostrarCol($colResponsables);
+	    //     echo "A continuación, ingrese el número de empleado del responsable por el que desea cambiar: \n";
+	    //     $nronuevo = trim(fgets(STDIN));
+	    //     if(is_integer($nronuevo)){
+		//     if($responsable->buscar($nronuevo)){
+		// 	$viajes->setObjResponsable($nronuevo);
+        //     }}}
 
         
         $viajes->setDestino($nuevoDestino);
