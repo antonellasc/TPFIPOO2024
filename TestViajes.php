@@ -162,7 +162,7 @@ function ingresarNuevaEmpresa($objEmpresa){
     if ($empresa->insertar()){
         echo "Empresa agregado con exito \n";
     } else {
-        echo "(!!!)La emopresa no se pudo agregar\n";
+        echo "(!!!)La empresa no se pudo agregar\n";
     }
     
 }
