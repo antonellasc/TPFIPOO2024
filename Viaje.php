@@ -243,6 +243,8 @@ class Viaje{
         $resp = false;
         $base = new BaseDatos();
 
+        $empresa = new Empresa();
+        $responsableV = new ResponsableV();
         $consultaModificar = "UPDATE viaje 
         SET vdestino = '" . $this->getDestino() . 
         "', vcantmaxpasajeros = '" . $this->getCantMaxPasajeros() .

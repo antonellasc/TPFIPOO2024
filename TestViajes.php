@@ -50,7 +50,7 @@ function opcionesModViaje(){
         echo "1.Datos del viaje". "\n";
         echo "2.Responsable del viaje". "\n";
         echo "3.Datos de Pasajeros". "\n";
-        echo "Eliga una opcion: \n";
+        echo "Elija una opcion: \n";
         echo "+====================================+\n";
         $opcion = trim(fgets(STDIN));
         
@@ -211,8 +211,8 @@ function seleccionarIdViaje($objViaje){
 //Modificar datos de un viaje (OPCION 1 <<OPCION2>>)
 function modificarDatosViaje($codigoViaje){
     $viajes = new Viaje();
-    $empresa = new Empresa();
-    $responsable = new ResponsableV();
+    // $empresa = new Empresa();
+    // $responsable = new ResponsableV();
 
     echo "--------------------------------------------------------\n";
         echo "Nuevo destino: \n";
