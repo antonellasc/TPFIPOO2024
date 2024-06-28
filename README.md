@@ -2,9 +2,9 @@
 
 
 # Introducción a la Programación Orientada a Objetos 2024
-Tecnicatura Universitaria en Desarrollo Web
-Facultad de Informática
-Universidad Nacional del Comahue
+- Tecnicatura Universitaria en Desarrollo Web
+- Facultad de Informática
+- Universidad Nacional del Comahue
 
 # GRUPO 33
 
