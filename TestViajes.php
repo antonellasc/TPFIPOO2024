@@ -553,15 +553,21 @@ function modificarDatosEmpresa($objEmpresa){
     }
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
     //$idEmpresa = $empresa->getIdEmpresa();
-    $modEmpresa = trim(readline("Nuevo nombre: "));
-    $modDireccion = trim(readline("Nuevo direccion: "));
-    $empresa->setNombreEmpresa($modEmpresa);
-    $empresa->setDomicilioEmpresa($modDireccion);
-    $cambio = $empresa->modificar();
-    if($cambio){
-        echo "Cambios realizado con exito!\n";
-    }else{
-        echo "No es posible modificar la empresa\n";
+    echo "Ingrese el nuevo nombre: \n";
+    $modEmpresa = trim(fgets(STDIN));
+    echo "Ingrese la nueva dirección: \n";
+    $modDireccion = trim(fgets(STDIN));
+    if($modEmpresa != "" && $modDireccion != ""){
+        $empresa->setNombreEmpresa($modEmpresa);
+        $empresa->setDomicilioEmpresa($modDireccion);
+        $cambio = $empresa->modificar();
+        if($cambio){
+            echo "Cambios realizados con éxito! \n";
+        }else{
+            echo "No es posible modificar la empresa. \n";
+        }
+        }else{
+        echo "Por favor, ingrese datos válidos. \n";    
     }
 }
 ?>
