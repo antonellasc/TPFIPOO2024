@@ -160,9 +160,9 @@ function ingresarNuevaEmpresa($objEmpresa){
     $empresa = new Empresa();
     $empresa->cargar(null, $nombreEmpresa, $domicilioEmpresa);
     if ($empresa->insertar()){
-        echo "Viaje agregado con exito \n";
+        echo "Empresa agregado con exito \n";
     } else {
-        echo "(!!!)El viaje no se pudo agregar\n";
+        echo "(!!!)La emopresa no se pudo agregar\n";
     }
     
 }
