@@ -539,10 +539,11 @@ function mostrarDatosViaje($objViaje){
 
 		if($viajeInfo != null){
           $retornaViaje = $objViaje->mostrarCol($viajeInfo); 
-		  echo $retornaViaje;  
-		}else{
-          echo "No existe un viaje con ese id. \n";  
-		}
+		  echo $retornaViaje;
+        }  
+		// }else{
+        //   echo "No existe un viaje con ese id. \n";  
+		// }
 }
 
 //Modifica datos de una empresa(OPCION 6)
