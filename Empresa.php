@@ -130,11 +130,11 @@ class Empresa{
 	}
 
 
-    public function modificar(){
+    public function modificar($id){
 	    $resp =false; 
 	    $base=new BaseDatos();
 		$consultaModifica="UPDATE empresa SET enombre ='".$this->getNombreEmpresa()."', edireccion ='".$this->getDomicilioEmpresa()."'
-                           WHERE idempresa ='".$this->getIdEmpresa()."'";
+                           WHERE idempresa ='".$id."'";
 		if($base->Iniciar()){
 			if($base->Ejecutar($consultaModifica)){
 			    $resp=  true;

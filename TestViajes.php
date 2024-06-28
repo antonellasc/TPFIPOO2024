@@ -604,7 +604,8 @@ function modificarDatosEmpresa($objEmpresa){
         echo $empresa->__toString();
     }
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
-    //$idEmpresa = $empresa->getIdEmpresa();
+    echo "Ingrese el ID de la empresa a modificar: \n";
+    $idEmpresa = trim(fgets(STDIN));
     echo "Ingrese el nuevo nombre: \n";
     $modEmpresa = trim(fgets(STDIN));
     echo "Ingrese la nueva dirección: \n";
@@ -612,7 +613,7 @@ function modificarDatosEmpresa($objEmpresa){
     if($modEmpresa != "" && $modDireccion != ""){
         $empresa->setNombreEmpresa($modEmpresa);
         $empresa->setDomicilioEmpresa($modDireccion);
-        $cambio = $empresa->modificar();
+        $cambio = $empresa->modificar($idEmpresa);
         if($cambio){
             echo "Cambios realizados con éxito! \n";
         }else{
